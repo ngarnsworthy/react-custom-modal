@@ -221,12 +221,15 @@ const OptionDialog = (props: OptionDialogProps) => {
     return (
         // @ts-ignore
         <div style={style}>
-            {/* @ts-ignore */}
+            {/*
+  // @ts-ignore */}
             <div style={headerStyle}>
-                {/* @ts-ignore */}
+                {/*
+  // @ts-ignore */}
                 <span style={titleStyle}>{title}</span>
             </div>
-            {/* @ts-ignore */}
+            {/*
+  // @ts-ignore */}
             {text && text !== "" ? <div style={textStyle}>{text}</div> : null}
             {isInput ? (
                 <div style={inputsStyle}>
@@ -235,7 +238,8 @@ const OptionDialog = (props: OptionDialogProps) => {
                             {inputsToRender.map((item) => (
                                 <Fragment>
                                     <div style={{textAlign: "left"}}>
-                                        {/* @ts-ignore */}
+                                        {/*
+  // @ts-ignore */}
                                         <label style={{display: "block"}} for={item.name}>
                                             {item.label}
                                         </label>
@@ -309,7 +313,8 @@ const OptionDialog = (props: OptionDialogProps) => {
                                 ) : null}
                                 <input
                                     ref={(ref) => {
-                                        {/* @ts-ignore */}
+                                        {/*
+  // @ts-ignore */}
                                         inputRef.current = ref;
                                     }}
                                     value={inputRef.current ? inputRef.current.value : ""}
@@ -361,10 +366,12 @@ const OptionDialog = (props: OptionDialogProps) => {
                 </div>
             ) : null}
 
-            {/* @ts-ignore */}
+            { /*
+            // @ts-ignore */}
             <div style={footerStyle}>
-                {/* @ts-ignore */}
-                <div style={optionsStyle}>
+                {/*
+  // @ts-ignore */}
+                      <div style={optionsStyle}>
                     {optionsToRender.map((option) => (
                         <button style={option.style} onClick={option.onClick}>
                             {option.name}

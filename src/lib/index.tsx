@@ -1,13 +1,5 @@
-import React, {
-    createContext,
-    useReducer,
-    useEffect,
-    useContext,
-    useCallback
-} from "react";
-
+import React, {createContext, useCallback, useContext, useEffect, useReducer} from "react";
 import Dialog from './Popups/Dialog'
-
 import {ModalRoot} from "./component";
 
 interface OptionDialogOptions {

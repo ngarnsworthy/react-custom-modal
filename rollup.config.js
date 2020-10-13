@@ -8,7 +8,7 @@ import postcss from 'rollup-plugin-postcss';
 import commonjs from 'rollup-plugin-commonjs';
 
 export default {
-    input: "src/index.tsx",
+    input: "src/lib/index.tsx",
     output: [
         {
             file: pkg.main,
