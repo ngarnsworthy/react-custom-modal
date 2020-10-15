@@ -13,7 +13,7 @@ npm i react-custom-popup
 ```jsx padded
 // root component file
 
-import {ModalProvider} from "react-custom-popup/build";
+import {ModalProvider} from "react-custom-popup";
 
 const App = (props) => {
     return (
@@ -28,7 +28,7 @@ export default App;
 ```jsx padded
 // in any other component
 
-import {usePopup} from "react-custom-popup/build";
+import {usePopup} from "react-custom-popup";
 
 const MyComponent = (props) => {
     
