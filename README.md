@@ -2,6 +2,10 @@
 
 react-custom-popup is a plain React package for dealing with popups/dialogs.
 
+![Alt text](samples/alert.gif?raw=true "Title")
+![Alt text](samples/option.gif?raw=true "Title")
+![Alt text](samples/input.gif?raw=true "Title")
+
 ## Installation
 
 ```bash
