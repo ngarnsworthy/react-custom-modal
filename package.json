@@ -1,6 +1,6 @@
 {
   "name": "react-custom-popup",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "React Popup Library build using React Context API",
   "main": "build/index.js",
   "module": "build/index.es.js",
@@ -13,10 +13,8 @@
     "alert"
   ],
   "repository": {
-    "type": "git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "type": "git",
+    "url": "https://github.com/Rafaa17/react-custom-modal"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
