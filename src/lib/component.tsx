@@ -3,10 +3,9 @@ import React, {useEffect} from "react";
 import "./index.scss";
 import {usePopup} from "./index";
 
-const CrossIcon = (props: any) => (
-    <div>
+const CrossIcon = ({onClick}: {onClick:()=>void}) => (
+    <div onClick={onClick}>
         <svg
-            {...props}
             fill="none"
             strokeWidth="2"
             viewBox="0 0 24 24"
@@ -58,25 +57,25 @@ const ModalWrapper = ({children}: { children: any }) => (
 export const ModalRoot = ({animated, CloseComponent = CrossIcon}: { animated: boolean, CloseComponent: any }) => {
 
     let {
+        componentJSX: ComponentJSX,
         component: Component,
-        modalProps,
+        componentProps,
         hideModal,
-        showModal,
-        showAlert,
-        showInputDialog,
-        showOptionDialog
     } = usePopup();
 
-    modalProps = {...modalProps, hideModal, showModal, showAlert, showInputDialog, showOptionDialog}
+    componentProps = {...componentProps }
 
-    return Component ? (
+    return Component || ComponentJSX ? (
         <ModalWrapper>
             <ModalBackdrop animated={animated} onClick={hideModal}/>
             {/* <ModalContent animated={animated} className={modalProps.className}> */}
-            <Component
-                {...modalProps}
-            />
-            {!modalProps.hasOwnProperty("type") ? (
+
+            {ComponentJSX ? ComponentJSX : <Component
+                {...componentProps}
+            />}
+
+
+            {!componentProps.hasOwnProperty("type") ? (
                 <CloseComponent onClick={hideModal}/>
             ) : null}
             {/* </ModalContent> */}

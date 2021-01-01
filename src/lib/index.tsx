@@ -1,4 +1,10 @@
-import React, {createContext, useCallback, useContext, useEffect, useReducer} from "react";
+import React, {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useReducer
+} from "react";
 import Dialog from './Popups/Dialog'
 import {ModalRoot} from "./component";
 
@@ -49,11 +55,13 @@ interface AlertOptions {
     confirmText?: string;
 }
 
+
 const ModalContext = createContext({
     component: () => <div>No modal component supplied</div>,
-    modalProps: {},
+    componentJSX: <div></div>,
+    componentProps: {},
     // @ts-ignore
-    showModal: ({component, componentProps}: { component: any, componentProps: any }) => {
+    showModal: (component:JSX.Element) => {
     },
     hideModal: () => {
     },
@@ -72,12 +80,12 @@ const ModalContext = createContext({
 
 const {Provider, Consumer: ModalConsumer} = ModalContext;
 
-const reducer = (state: any, {type, component, modalProps}: { type: 'openModal' | 'hideModal', component?: any, modalProps?: any }) => {
+const reducer = (state: any, {type, component, componentProps, componentJSX}: { type: 'openModal' | 'hideModal', componentJSX?: JSX.Element, component?: any, componentProps?: any }) => {
     switch (type) {
         case "openModal":
-            return {...state, component, modalProps};
+            return {...state, component, componentProps, componentJSX};
         case "hideModal":
-            return {...state, component: null, modalProps: {}};
+            return {...state, component: null, modalProps: {}, componentJSX: null};
         default:
             throw new Error("Unspecified reducer action");
     }
@@ -86,10 +94,11 @@ const reducer = (state: any, {type, component, modalProps}: { type: 'openModal' 
 const ModalProvider = ({children, animated, CloseComponent}: { children: any, animated: boolean, CloseComponent?: any }) => {
 
     const initialState = {
+        componentJSX:null,
         component: null,
         modalProps: {},
-        showModal: ({component, modalProps}: { component: any, modalProps: any }) => {
-            dispatch({type: "openModal", component, modalProps});
+        showModal: (componentJSX:JSX.Element) => {
+            dispatch({type: "openModal", componentJSX});
         },
         hideModal: () => {
             dispatch({type: "hideModal"});
@@ -97,7 +106,7 @@ const ModalProvider = ({children, animated, CloseComponent}: { children: any, an
         showAlert: (options: AlertOptions) => {
             dispatch({
                     type: 'openModal',
-                    component: Dialog, modalProps: {isAlert: true, isInputDialog: false, ...options}
+                    component: Dialog, componentProps: {isAlert: true, isInputDialog: false, ...options}
                 }
             )
         },
@@ -108,7 +117,7 @@ const ModalProvider = ({children, animated, CloseComponent}: { children: any, an
             dispatch({
                 type: "openModal",
                 component: Dialog,
-                modalProps: {
+                componentProps: {
                     isAlert: false,
                     isInput: false,
                     ...options
@@ -119,7 +128,7 @@ const ModalProvider = ({children, animated, CloseComponent}: { children: any, an
             dispatch({
                 type: "openModal",
                 component: Dialog,
-                modalProps: {
+                componentProps: {
                     isAlert: false,
                     isInput: true,
                     ...options

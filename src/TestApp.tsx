@@ -3,10 +3,19 @@ import {ModalProvider, usePopup} from './lib'
 
 const MyComponent = () => {
 
-    const {showAlert, showOptionDialog, showInputDialog} = usePopup();
+    const TestComponent = (props:{a:string}) => {
+
+        return (
+            <div style={{background:'white'}}>Received Props: {JSON.stringify(props)}</div>
+        )
+
+    }
+
+    const {showAlert, showOptionDialog, showInputDialog, showModal} = usePopup();
 
     return (
         <>
+            <button onClick={() => showModal(<TestComponent a={'test'} />)}>Show Modal</button>
             <button onClick={() => showAlert({type: 'error', text: 'test', title: 'test'})}>Show Alert</button>
             <button onClick={() => showOptionDialog({type: 'error', text: 'test', title: 'test'})}>Show Option Dialog
             </button>

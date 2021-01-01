@@ -57,7 +57,7 @@ usePopup() hook exposes:
 
 *   showAlert(options:AlertOptions)
 *   hideAlert()
-*   showModal({component,componentProps})
+*   showModal(component:JSX.Element)
 *   hideModal()
 *   showOptionDialog(options:OptionDialogOptions)
 *   showInputDialog(options:InputDialogOptions)
