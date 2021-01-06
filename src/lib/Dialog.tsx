@@ -1,11 +1,13 @@
 import React, {Fragment, useState, useRef, ChangeEvent} from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import {DynamicObject} from "../index";
+import {DialogType, DynamicObject} from "./index";
+import Header from "./Header";
+import Footer from "./Footer";
 
-interface OptionDialogProps {
+interface DialogProps {
     title: string,
     text: string,
-    type: string,
+    type: DialogType,
     hideModal: () => {},
     optionButtons: Array<any>,
     onConfirm: (result?: DynamicObject) => {},
@@ -21,13 +23,13 @@ interface OptionDialogProps {
     input: {
         placeholder: string,
         label: string,
-        type: string,
+        inputType: string,
         name: string,
         default: string,
     },
 }
 
-const OptionDialog = (props: OptionDialogProps) => {
+const Dialog = (props: DialogProps) => {
     const {
         title,
         text,
@@ -46,7 +48,7 @@ const OptionDialog = (props: OptionDialogProps) => {
         input = {
             placeholder: "Placeholder",
             label: "Label",
-            type: "text",
+            inputType: "text",
             name: "input",
             default: "",
         },
@@ -57,105 +59,11 @@ const OptionDialog = (props: OptionDialogProps) => {
     );
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const style = {
-        minHeight: "25%",
-        // width: "30%",
-        minWidth: 300,
-        maxWidth: 500,
-        textAlign: "center",
-        position: "relative",
-        backgroundColor: "white",
-        overflow: "hidden",
-        borderRadius: "10px",
-        justifyContent: "space-between",
-        display: "flex",
-        flexDirection: "column",
-        // animation: "slideDownFade .2s forwards",
-    };
-
-    const optionsStyle = {
-        display: "flex",
-        flexFlow: "row wrap",
-        flexDirection: "row",
-    };
-
-    const headerStyle = {
-        padding: "20px",
-        backgroundColor:
-            type === "success"
-                ? "lightgreen"
-                : type === "danger"
-                ? "coral"
-                : type === "info"
-                    ? "lightblue"
-                    : type === "warning"
-                        ? "orange"
-                        : "lightblue",
-        textAlign: "left",
-    };
-
-    const footerStyle = {
-        padding: "20px",
-        // backgroundColor: "whitesmoke",
-        textAlign: "right",
-    };
-
-    const buttonsStyle = {
-        borderRadius: "5px",
-        boxShadow: "none",
-        border: "none",
-        paddingTop: "10px",
-        paddingBottom: "10px",
-        paddingLeft: "20px",
-        paddingRight: "20px",
-        margin: "5px",
-        flex: 1,
-        overflow: "hidden"
-    };
-
-    const cancelButtonStyle = {
-        ...buttonsStyle,
-        backgroundColor: "white",
-        boxShadow: "#00000075 0px 0px 5px 0px",
-        cursor: 'pointer'
-    };
-
-    const confirmButtonStyle = {
-        ...buttonsStyle,
-        backgroundColor: "white",
-        boxShadow: "#00000075 0px 0px 5px 0px",
-        cursor: 'pointer'
-    };
-
-    const titleStyle = {
-        fontWeight: "500",
-        fontSize: "x-large",
-    };
-
-    const textStyle = {
-        fontSize: "large",
-        textAlign: "left",
-        padding: "20px",
-    };
-
-    const inputsStyle = {
-        padding: "20px",
-    };
-
-    const closeIcon = () => <svg color={'#484848'} height={20} width={20} aria-hidden="true" data-prefix="fas"
-                                 data-icon="times"
-                                 className="svg-inline--fa fa-times fa-w-11" xmlns="http://www.w3.org/2000/svg"
-                                 viewBox="0 0 352 512">
-        <path fill="currentColor"
-              d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"/>
-    </svg>;
-
     const readImage = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             let imagePromises: Array<Promise<void>> = [];
             let images: Array<any> = [];
-            // @ts-ignore
-            event.target.files.forEach((file: File) => {
+            Array.from(event.target.files).forEach((file: File) => {
                 imagePromises.push(
                     new Promise((resolve) => {
                         var reader = new FileReader();
@@ -180,13 +88,6 @@ const OptionDialog = (props: OptionDialogProps) => {
             });
         }
     };
-    const inputStyle = {
-        padding: "10px",
-        border: "1px solid gainsboro",
-        borderRadius: "5px",
-        overflow: "hidden",
-        width: "-webkit-fill-available",
-    };
 
     let optionsToRender = [];
 
@@ -201,7 +102,6 @@ const OptionDialog = (props: OptionDialogProps) => {
                         if (onCancel) onCancel();
                         if (onDismissed && isInput) onDismissed(inputValues);
                     },
-                    style: cancelButtonStyle,
                 },
                 {
                     name: confirmText,
@@ -210,7 +110,6 @@ const OptionDialog = (props: OptionDialogProps) => {
                         if (onConfirm) onConfirm(inputValues);
                         if (onDismissed && isInput) onDismissed(inputValues);
                     },
-                    style: confirmButtonStyle,
                 },
             ];
     else
@@ -220,7 +119,6 @@ const OptionDialog = (props: OptionDialogProps) => {
                 onClick: () => {
                     hideModal();
                 },
-                style: confirmButtonStyle,
             },
         ];
 
@@ -231,40 +129,23 @@ const OptionDialog = (props: OptionDialogProps) => {
         else inputsToRender = inputs;
     }
 
-    console.log(optionButtons)
-
-    // @ts-ignore
     return (
-        // @ts-ignore
-        <div style={style}>
-            {/*
-  // @ts-ignore */}
-            <div style={headerStyle}>
-                {showCloseButton && (
-                    <div style={{position: 'absolute', right: 20, cursor: 'pointer'}}
-                         onClick={hideModal}>{closeIcon()}</div>
-                )}
-                {/*
-  // @ts-ignore */}
-                <span style={titleStyle}>{title}</span>
-            </div>
-            {/*
-  // @ts-ignore */}
-            {text && text !== "" ? <div style={textStyle}>{text}</div> : null}
+        <div className={'dialog-wrapper'}>
+            <Header showCloseButton={showCloseButton} type={type} hideModal={hideModal} title={title}/>
+            {text && text !== "" ? <div className={'body-text'}>{text}</div> : null}
             {isInput ? (
-                <div style={inputsStyle}>
-                    {type !== "image" ? (
+                <div className={'inputs-container'}>
+                    {input.inputType !== "image" ? (
                         <Fragment>
                             {inputsToRender.map((item) => (
                                 <Fragment>
                                     <div style={{textAlign: "left"}}>
-                                        {/*
-  // @ts-ignore */}
-                                        <label style={{display: "block", marginBottom: 5}} for={item.name}>
+                                        <label style={{display: "block", marginBottom: 5}}>
                                             {item.label}
                                         </label>
                                         {item.inputType && item.inputType !== "textarea" ? (
                                             <input
+                                                className={'input-item'}
                                                 onChange={(val) => {
                                                     setInputValues({
                                                         ...inputValues,
@@ -276,7 +157,6 @@ const OptionDialog = (props: OptionDialogProps) => {
                                                 value={
                                                     inputValues[item.name] ? inputValues[item.name] : null
                                                 }
-                                                style={inputStyle}
                                                 id={item.name}
                                                 placeholder={item.placeholder}
                                                 type={item.inputType || "text"}
@@ -295,7 +175,7 @@ const OptionDialog = (props: OptionDialogProps) => {
                                                 value={
                                                     inputValues[item.name] ? inputValues[item.name] : null
                                                 }
-                                                style={inputStyle}
+                                                className={'input-item'}
                                                 id={item.name}
                                                 placeholder={item.placeholder}
                                             />
@@ -338,8 +218,9 @@ const OptionDialog = (props: OptionDialogProps) => {
                                     }}
                                     value={inputRef.current ? inputRef.current.value : ""}
                                     multiple
+                                    className={'input-item'}
                                     onChange={(val) => readImage(val)}
-                                    style={{...inputStyle, display: "none"}}
+                                    style={{display: "none"}}
                                     id={"image"}
                                     type={"file"}
                                 />
@@ -385,21 +266,9 @@ const OptionDialog = (props: OptionDialogProps) => {
                 </div>
             ) : null}
 
-            { /*
-            // @ts-ignore */}
-            <div style={footerStyle}>
-                {/*
-  // @ts-ignore */}
-                <div style={optionsStyle}>
-                    {optionsToRender.map((option) => (
-                        <button style={option.style} onClick={option.onClick}>
-                            {option.name}
-                        </button>
-                    ))}
-                </div>
-            </div>
+            <Footer optionsToRender={optionsToRender}/>
         </div>
     );
 };
 
-export default OptionDialog;
+export default Dialog;

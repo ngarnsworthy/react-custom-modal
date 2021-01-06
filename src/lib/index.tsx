@@ -5,15 +5,22 @@ import React, {
     useEffect,
     useReducer
 } from "react";
-import Dialog from './Popups/Dialog'
 import {ModalRoot} from "./component";
+import Dialog from "./Dialog";
 
 export enum AnimationType {
-    ZOOM_IN= 'ZOOM_IN',
+    ZOOM_IN = 'ZOOM_IN',
     FADE_IN = 'FADE_IN',
     FLASH = 'FLASH',
     SWING = 'SWING',
     HEART_BEAT = 'HEART_BEAT'
+}
+
+export enum DialogType {
+    WARNING = 'warning',
+    INFO = 'info',
+    DANGER = 'danger',
+    SUCCESS = 'success'
 }
 
 interface OptionDialogOptions {
@@ -29,7 +36,7 @@ interface OptionDialogOptions {
     animationType?: AnimationType
 }
 
-interface InputProps {
+export interface InputProps {
     placeholder?: string;
     label?: string;
     inputType?: string;
@@ -75,7 +82,7 @@ const ModalContext = createContext({
     componentJSX: <div></div>,
     componentProps: {},
     // @ts-ignore
-    showModal: (component:JSX.Element) => {
+    showModal: (component: JSX.Element) => {
     },
     hideModal: () => {
     },
@@ -108,10 +115,10 @@ const reducer = (state: any, {type, component, componentProps, componentJSX}: { 
 const ModalProvider = ({children}: { children: any }) => {
 
     const initialState = {
-        componentJSX:null,
+        componentJSX: null,
         component: null,
         modalProps: {},
-        showModal: (componentJSX:JSX.Element) => {
+        showModal: (componentJSX: JSX.Element) => {
             dispatch({type: "openModal", componentJSX});
         },
         hideModal: () => {

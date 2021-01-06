@@ -1,5 +1,5 @@
 import React from 'react';
-import {ModalProvider, usePopup} from './lib'
+import {AnimationType, ModalProvider, usePopup} from './lib'
 
 const MyComponent = () => {
 
@@ -16,15 +16,15 @@ const MyComponent = () => {
     return (
         <>
             <button onClick={() => showModal(<TestComponent a={'test'} />)}>Show Modal</button>
-            <button onClick={() => showAlert({type: 'danger', text: 'test', title: 'test'})}>Show Alert</button>
+            <button onClick={() => showAlert({type: 'danger', text: 'test', title: 'test', animationType: AnimationType.FADE_IN})}>Show Alert</button>
             <button onClick={() => showAlert({type: 'warning', text: 'test', title: 'test'})}>Show Alert</button>
             <button onClick={() => showAlert({type: 'success', text: 'test', title: 'test'})}>Show Alert</button>
             <button onClick={() => showAlert({type: 'info', text: 'test', title: 'test'})}>Show Alert</button>
-            <button onClick={() => showOptionDialog({type: 'error', text: 'test', title: 'test'})}>Show Option Dialog
+            <button onClick={() => showOptionDialog({text: 'test', title: 'test'})}>Show Option Dialog
             </button>
             <button onClick={() => showInputDialog({
                 title: 'test',
-                input: {inputType: 'text', name: 'testinput'},
+                input: {inputType: 'image', name: 'testinput'},
                 onConfirm: (response) => {
                     showAlert({title: 'Result', text: JSON.stringify(response)});
                 }
