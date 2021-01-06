@@ -14,6 +14,7 @@ interface OptionDialogProps {
     isInput: boolean,
     confirmText: string,
     cancelText: string,
+    showCloseButton: boolean,
     inputs: Array<any>,
     onDismissed: (result?: DynamicObject) => {},
     onOpened: (result?: DynamicObject) => {},
@@ -36,6 +37,7 @@ const OptionDialog = (props: OptionDialogProps) => {
         onConfirm = null,
         onCancel = null,
         isAlert = true,
+        showCloseButton = false,
         isInput = false,
         confirmText = "Ok",
         cancelText = "Cancel",
@@ -57,7 +59,9 @@ const OptionDialog = (props: OptionDialogProps) => {
 
     const style = {
         minHeight: "25%",
-        width: "50%",
+        // width: "30%",
+        minWidth: 300,
+        maxWidth: 500,
         textAlign: "center",
         position: "relative",
         backgroundColor: "white",
@@ -66,7 +70,7 @@ const OptionDialog = (props: OptionDialogProps) => {
         justifyContent: "space-between",
         display: "flex",
         flexDirection: "column",
-        animation: "slideDownFade .2s forwards",
+        // animation: "slideDownFade .2s forwards",
     };
 
     const optionsStyle = {
@@ -91,8 +95,8 @@ const OptionDialog = (props: OptionDialogProps) => {
     };
 
     const footerStyle = {
-        padding: "15px",
-        backgroundColor: "whitesmoke",
+        padding: "20px",
+        // backgroundColor: "whitesmoke",
         textAlign: "right",
     };
 
@@ -111,28 +115,40 @@ const OptionDialog = (props: OptionDialogProps) => {
 
     const cancelButtonStyle = {
         ...buttonsStyle,
-        backgroundColor: "lightgrey",
+        backgroundColor: "white",
+        boxShadow: "#00000075 0px 0px 5px 0px",
+        cursor: 'pointer'
     };
 
     const confirmButtonStyle = {
         ...buttonsStyle,
-        backgroundColor: "lightgreen",
+        backgroundColor: "white",
+        boxShadow: "#00000075 0px 0px 5px 0px",
+        cursor: 'pointer'
     };
 
     const titleStyle = {
         fontWeight: "500",
-        fontSize: "20px",
+        fontSize: "x-large",
     };
 
     const textStyle = {
-        fontSize: "15px",
+        fontSize: "large",
         textAlign: "left",
-        padding: "15px",
+        padding: "20px",
     };
 
     const inputsStyle = {
         padding: "20px",
     };
+
+    const closeIcon = () => <svg color={'#484848'} height={20} width={20} aria-hidden="true" data-prefix="fas"
+                                 data-icon="times"
+                                 className="svg-inline--fa fa-times fa-w-11" xmlns="http://www.w3.org/2000/svg"
+                                 viewBox="0 0 352 512">
+        <path fill="currentColor"
+              d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"/>
+    </svg>;
 
     const readImage = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -224,6 +240,10 @@ const OptionDialog = (props: OptionDialogProps) => {
             {/*
   // @ts-ignore */}
             <div style={headerStyle}>
+                {showCloseButton && (
+                    <div style={{position: 'absolute', right: 20, cursor: 'pointer'}}
+                         onClick={hideModal}>{closeIcon()}</div>
+                )}
                 {/*
   // @ts-ignore */}
                 <span style={titleStyle}>{title}</span>
@@ -240,7 +260,7 @@ const OptionDialog = (props: OptionDialogProps) => {
                                     <div style={{textAlign: "left"}}>
                                         {/*
   // @ts-ignore */}
-                                        <label style={{display: "block"}} for={item.name}>
+                                        <label style={{display: "block", marginBottom: 5}} for={item.name}>
                                             {item.label}
                                         </label>
                                         {item.inputType && item.inputType !== "textarea" ? (
@@ -313,8 +333,7 @@ const OptionDialog = (props: OptionDialogProps) => {
                                 ) : null}
                                 <input
                                     ref={(ref) => {
-                                        {/*
-  // @ts-ignore */}
+                                        // @ts-ignore
                                         inputRef.current = ref;
                                     }}
                                     value={inputRef.current ? inputRef.current.value : ""}
@@ -371,7 +390,7 @@ const OptionDialog = (props: OptionDialogProps) => {
             <div style={footerStyle}>
                 {/*
   // @ts-ignore */}
-                      <div style={optionsStyle}>
+                <div style={optionsStyle}>
                     {optionsToRender.map((option) => (
                         <button style={option.style} onClick={option.onClick}>
                             {option.name}

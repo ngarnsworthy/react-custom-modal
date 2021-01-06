@@ -8,6 +8,14 @@ import React, {
 import Dialog from './Popups/Dialog'
 import {ModalRoot} from "./component";
 
+export enum AnimationType {
+    ZOOM_IN= 'ZOOM_IN',
+    FADE_IN = 'FADE_IN',
+    FLASH = 'FLASH',
+    SWING = 'SWING',
+    HEART_BEAT = 'HEART_BEAT'
+}
+
 interface OptionDialogOptions {
     title?: string,
     text?: string;
@@ -17,6 +25,8 @@ interface OptionDialogOptions {
     onCancel?: () => void;
     confirmText?: string;
     cancelText?: string;
+    showCloseButton?: boolean;
+    animationType?: AnimationType
 }
 
 interface InputProps {
@@ -46,6 +56,8 @@ interface InputDialogOptions {
     input?: InputProps;
     multiple?: boolean;
     onDismissed?: () => void;
+    showCloseButton?: boolean;
+    animationType?: AnimationType
 }
 
 interface AlertOptions {
@@ -53,6 +65,8 @@ interface AlertOptions {
     type?: string;
     title?: string;
     confirmText?: string;
+    showCloseButton?: boolean;
+    animationType?: AnimationType
 }
 
 
@@ -91,7 +105,7 @@ const reducer = (state: any, {type, component, componentProps, componentJSX}: { 
     }
 };
 
-const ModalProvider = ({children, animated, CloseComponent}: { children: any, animated: boolean, CloseComponent?: any }) => {
+const ModalProvider = ({children}: { children: any }) => {
 
     const initialState = {
         componentJSX:null,
@@ -157,7 +171,7 @@ const ModalProvider = ({children, animated, CloseComponent}: { children: any, an
     return (
         <div onKeyDown={onKeyDown} className="simple-react-modals">
             <Provider value={state}>
-                <ModalRoot CloseComponent={CloseComponent} animated={animated}/>
+                <ModalRoot/>
                 {children}
             </Provider>
         </div>

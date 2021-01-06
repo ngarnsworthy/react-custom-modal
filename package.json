@@ -1,6 +1,6 @@
 {
   "name": "react-custom-popup",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "React Popup Library build using React Context API",
   "main": "build/index.js",
   "module": "build/index.es.js",
@@ -24,8 +24,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "rollup-plugin-sass": "^1.2.2",
-    "react-datepicker": "^3.2.2"
+    "react-datepicker": "^3.2.2",
+    "rollup-plugin-sass": "^1.2.2"
   },
   "peerDependencies": {
     "react": "^16.13.1",

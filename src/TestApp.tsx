@@ -16,13 +16,15 @@ const MyComponent = () => {
     return (
         <>
             <button onClick={() => showModal(<TestComponent a={'test'} />)}>Show Modal</button>
-            <button onClick={() => showAlert({type: 'error', text: 'test', title: 'test'})}>Show Alert</button>
+            <button onClick={() => showAlert({type: 'danger', text: 'test', title: 'test'})}>Show Alert</button>
+            <button onClick={() => showAlert({type: 'warning', text: 'test', title: 'test'})}>Show Alert</button>
+            <button onClick={() => showAlert({type: 'success', text: 'test', title: 'test'})}>Show Alert</button>
+            <button onClick={() => showAlert({type: 'info', text: 'test', title: 'test'})}>Show Alert</button>
             <button onClick={() => showOptionDialog({type: 'error', text: 'test', title: 'test'})}>Show Option Dialog
             </button>
             <button onClick={() => showInputDialog({
                 title: 'test',
-                text: 'enter',
-                input: {inputType: 'text', label: 'Input Label', name: 'testinput'},
+                input: {inputType: 'text', name: 'testinput'},
                 onConfirm: (response) => {
                     showAlert({title: 'Result', text: JSON.stringify(response)});
                 }
@@ -40,7 +42,7 @@ const App = () => {
 
 export const Setup = () => {
     return (
-        <ModalProvider animated>
+        <ModalProvider>
             <App/>
         </ModalProvider>
     )

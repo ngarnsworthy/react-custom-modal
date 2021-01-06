@@ -1,14 +1,20 @@
+@import "animate.css";
+
+.animate__faster {
+  --animate-duration: 500ms;
+}
+
 .srm-modal-open {
   position: relative;
   overflow: hidden;
 }
 
 .srm-fade-in {
-  animation: fadeIn 0.1s forwards;
+  //animation: fadeIn 0.1s forwards;
 }
 
 .srm-slide-down-fade {
-  animation: slideDownFade 0.2s forwards;
+  //animation: slideDownFade 0.2s forwards;
 }
 
 .srm-modal-backdrop {
@@ -94,3 +100,4 @@
 .table-row:hover {
   box-shadow: 5px 5px 5px;
 }
+

@@ -1,27 +1,27 @@
 import React, {useEffect} from "react";
 
 import "./index.scss";
-import {usePopup} from "./index";
+import {AnimationType, usePopup} from "./index";
 
-const CrossIcon = ({onClick}: {onClick:()=>void}) => (
-    <div onClick={onClick}>
-        <svg
-            fill="none"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="srm-close-icon"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-    </div>
-);
+// const CrossIcon = ({onClick}: { onClick: () => void }) => (
+//     <div onClick={onClick}>
+//         <svg
+//             fill="none"
+//             strokeWidth="2"
+//             viewBox="0 0 24 24"
+//             stroke="currentColor"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//             className="srm-close-icon"
+//             xmlns="http://www.w3.org/2000/svg"
+//         >
+//             <line x1="18" y1="6" x2="6" y2="18"/>
+//             <line x1="6" y1="6" x2="18" y2="18"/>
+//         </svg>
+//     </div>
+// );
 
-const ModalBackdrop = ({animated, onClick}: { animated: boolean, onClick: () => void }) => {
+const ModalBackdrop = ({onClick}: {onClick: () => void }) => {
     useEffect(() => {
         document.body.classList.add("srm-modal-open");
 
@@ -33,7 +33,7 @@ const ModalBackdrop = ({animated, onClick}: { animated: boolean, onClick: () => 
     return (
         <div
             onClick={onClick}
-            className={`srm-modal-backdrop ${animated ? "srm-fade-in" : ""}`}
+            className={`srm-modal-backdrop`}
         >
 
         </div>
@@ -54,7 +54,7 @@ const ModalWrapper = ({children}: { children: any }) => (
 //   </div>
 // );
 
-export const ModalRoot = ({animated, CloseComponent = CrossIcon}: { animated: boolean, CloseComponent: any }) => {
+export const ModalRoot = () => {
 
     let {
         componentJSX: ComponentJSX,
@@ -63,21 +63,44 @@ export const ModalRoot = ({animated, CloseComponent = CrossIcon}: { animated: bo
         hideModal,
     } = usePopup();
 
-    componentProps = {...componentProps }
+    componentProps = {...componentProps, hideModal}
+
+    // @ts-ignore
+    const { animationType } = componentProps;
+
+    let animationClass = '';
+
+    switch (animationType as AnimationType) {
+        case AnimationType.FADE_IN:
+            animationClass = 'animate__animated animate__fadeIn animate__faster';
+            break
+        case AnimationType.HEART_BEAT:
+            animationClass = 'animate__animated animate__heartBeat animate__faster';
+            break
+        case AnimationType.FLASH:
+            animationClass = 'animate__animated animate__flash animate__faster';
+            break
+        case AnimationType.SWING:
+            animationClass = 'animate__animated animate__swing animate__faster';
+            break
+        case AnimationType.ZOOM_IN:
+            animationClass = 'animate__animated animate__zoomIn animate__faster';
+            break
+    }
+
 
     return Component || ComponentJSX ? (
         <ModalWrapper>
-            <ModalBackdrop animated={animated} onClick={hideModal}/>
+            <ModalBackdrop  onClick={hideModal}/>
             {/* <ModalContent animated={animated} className={modalProps.className}> */}
 
-            {ComponentJSX ? ComponentJSX : <Component
-                {...componentProps}
-            />}
+            <div className={animationClass}>
+                {ComponentJSX ? ComponentJSX : <Component {...componentProps}/>}
+            </div>
 
-
-            {!componentProps.hasOwnProperty("type") ? (
-                <CloseComponent onClick={hideModal}/>
-            ) : null}
+            {/*{!componentProps.hasOwnProperty("type") ? (*/}
+            {/*    <CloseComponent onClick={hideModal}/>*/}
+            {/*) : null}*/}
             {/* </ModalContent> */}
         </ModalWrapper>
     ) : null;
