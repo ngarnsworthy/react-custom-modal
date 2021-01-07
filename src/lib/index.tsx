@@ -44,7 +44,7 @@ interface OptionDialogOptions {
 export interface InputProps {
     placeholder?: string;
     label?: string;
-    inputType: 'text' | 'file' | 'number' | 'image' | 'textarea';
+    inputType: 'text' | 'file' | 'number' | 'image' | 'textarea' | 'date';
     name: string;
     default?: string;
     multiple?: boolean;

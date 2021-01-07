@@ -39,6 +39,15 @@ const MyComponent = () => {
                 }
             })}>Show Input Dialog
             </button>
+
+            <button onClick={() => showInputDialog({
+                title: 'test',
+                inputs:[{inputType: 'date', name:'test'}],
+                onConfirm: (response) => {
+                    showAlert({title: 'Result', text: JSON.stringify(response)});
+                }
+            })}>Show Input Dialog
+            </button>
         </>
     )
 }
