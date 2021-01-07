@@ -17,7 +17,7 @@ const MyComponent = () => {
         <>
             <button onClick={() => showModal(<TestComponent a={'test'} />)}>Show Modal</button>
             <button onClick={() => showAlert({type: 'danger', text: 'test', title: 'test', animationType: AnimationType.FADE_IN})}>Show Alert</button>
-            <button onClick={() => showAlert({type: 'warning', text: 'test', title: 'test'})}>Show Alert</button>
+            <button onClick={() => showAlert({type: 'warning', text: 'test', title: 'test', animationType: AnimationType.ZOOM_IN})}>Show Alert</button>
             <button onClick={() => showAlert({type: 'success', text: 'test', title: 'test'})}>Show Alert</button>
             <button onClick={() => showAlert({type: 'info', text: 'test', title: 'test'})}>Show Alert</button>
             <button onClick={() => showOptionDialog({text: 'test', title: 'test'})}>Show Option Dialog
@@ -25,6 +25,15 @@ const MyComponent = () => {
             <button onClick={() => showInputDialog({
                 title: 'test',
                 input: {inputType: 'image', name: 'testinput'},
+                onConfirm: (response) => {
+                    showAlert({title: 'Result', text: JSON.stringify(response)});
+                }
+            })}>Show Input Dialog
+            </button>
+
+            <button onClick={() => showInputDialog({
+                title: 'test',
+                inputs:[{inputType:'text', name:'test'},{inputType:'image', name:"image", multiple:true}],
                 onConfirm: (response) => {
                     showAlert({title: 'Result', text: JSON.stringify(response)});
                 }

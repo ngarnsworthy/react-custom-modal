@@ -23,11 +23,16 @@ export enum DialogType {
     SUCCESS = 'success'
 }
 
+export interface OptionDialogButton {
+    name: string;
+    onClick: () => void
+}
+
 interface OptionDialogOptions {
     title?: string,
     text?: string;
     type?: string;
-    optionButtons?: Array<any>;
+    optionButtons?: Array<OptionDialogButton>;
     onConfirm?: () => void;
     onCancel?: () => void;
     confirmText?: string;
@@ -39,9 +44,10 @@ interface OptionDialogOptions {
 export interface InputProps {
     placeholder?: string;
     label?: string;
-    inputType?: string;
-    name?: string;
+    inputType: 'text' | 'file' | 'number' | 'image' | 'textarea';
+    name: string;
     default?: string;
+    multiple?: boolean;
 }
 
 export interface DynamicObject {
@@ -52,7 +58,7 @@ interface InputDialogOptions {
     title?: string;
     text?: string;
     type?: string;
-    options?: Array<any>;
+    options?: Array<OptionDialogButton>;
     onConfirm?: (result?: DynamicObject) => void;
     onCancel?: () => void;
     label?: string;

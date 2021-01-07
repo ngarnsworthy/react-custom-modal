@@ -1,5 +1,5 @@
 import React from 'react';
-import {closeIcon, warningIcon} from "./SvgIcons";
+import {closeIcon, iconIllustrationTypes} from "./SvgIcons";
 import {DialogType} from "./index";
 
 interface IProps {
@@ -9,16 +9,16 @@ interface IProps {
     title: string;
 }
 
-const Header = ({showCloseButton, type, hideModal, title}:IProps) => {
+const Header = ({showCloseButton, type, hideModal, title}: IProps) => {
 
     return (
         <div className={`header header-${type}`}>
-            <div>{warningIcon()}</div>
+            {iconIllustrationTypes[type]}
             {showCloseButton && (
                 <div style={{position: 'absolute', right: 20, cursor: 'pointer'}}
                      onClick={hideModal}>{closeIcon()}</div>
             )}
-            <span className={'title'}>{title}</span>
+            <div className={`title ${iconIllustrationTypes[type] ? 'title-margin' : ''}`}>{title}</div>
         </div>
     )
 
