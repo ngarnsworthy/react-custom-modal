@@ -13,7 +13,9 @@ export enum AnimationType {
     FADE_IN = 'FADE_IN',
     FLASH = 'FLASH',
     SWING = 'SWING',
-    HEART_BEAT = 'HEART_BEAT'
+    HEART_BEAT = 'HEART_BEAT',
+    SLIDE_IN_LEFT = 'SLIDE_IN_LEFT',
+    SLIDE_IN_RIGHT = 'SLIDE_IN_RIGHT'
 }
 
 export enum DialogType {
@@ -31,7 +33,7 @@ export interface OptionDialogButton {
 interface OptionDialogOptions {
     title?: string,
     text?: string;
-    type?: string;
+    type?: DialogType;
     optionButtons?: Array<OptionDialogButton>;
     onConfirm?: () => void;
     onCancel?: () => void;
@@ -57,7 +59,7 @@ export interface DynamicObject {
 interface InputDialogOptions {
     title?: string;
     text?: string;
-    type?: string;
+    type?: DialogType;
     options?: Array<OptionDialogButton>;
     onConfirm?: (result?: DynamicObject) => void;
     onCancel?: () => void;
@@ -75,18 +77,30 @@ interface InputDialogOptions {
 
 interface AlertOptions {
     text?: string;
-    type?: string;
+    type?: DialogType;
     title?: string;
     confirmText?: string;
     showCloseButton?: boolean;
     animationType?: AnimationType
 }
 
+export interface ToastOptions {
+    text: string;
+    type: DialogType;
+    animationType?: AnimationType
+}
 
 const ModalContext = createContext({
     component: () => <div>No modal component supplied</div>,
     componentJSX: <div></div>,
-    componentProps: {},
+    componentProps: {
+        animationType: AnimationType.SLIDE_IN_RIGHT
+    },
+    toasts: [{
+        type: DialogType.DANGER,
+        text: '',
+        id: ''
+    }],
     // @ts-ignore
     showModal: (component: JSX.Element) => {
     },
@@ -103,16 +117,37 @@ const ModalContext = createContext({
     // @ts-ignore
     showInputDialog: (options: InputDialogOptions) => {
     },
+    // @ts-ignore
+    showToast: (options: ToastOptions) => {
+    },
+    hideToast: () => {
+
+    }
+
 });
+
+export type IToast = ToastOptions & { id: string };
 
 const {Provider, Consumer: ModalConsumer} = ModalContext;
 
-const reducer = (state: any, {type, component, componentProps, componentJSX}: { type: 'openModal' | 'hideModal', componentJSX?: JSX.Element, component?: any, componentProps?: any }) => {
+const reducer = (state: any, {
+    type,
+    component,
+    componentProps,
+    componentJSX,
+    toast,
+    id
+}: { type: 'openModal' | 'hideModal' | 'showToast' | 'hideToast', componentJSX?: JSX.Element, component?: any, componentProps?: any, toast?: IToast, id?: string }) => {
     switch (type) {
         case "openModal":
             return {...state, component, componentProps, componentJSX};
         case "hideModal":
             return {...state, component: null, modalProps: {}, componentJSX: null};
+        case "showToast":
+            return {...state, toasts: [...state.toasts, toast], componentProps};
+        case "hideToast":
+            const index = state.toasts.findIndex((t: { id: string | undefined; }) => t.id === id);
+            return {...state, toasts: [...state.toasts.slice(0, index), ...state.toasts.slice(index+1)]};
         default:
             throw new Error("Unspecified reducer action");
     }
@@ -123,6 +158,7 @@ const ModalProvider = ({children}: { children: any }) => {
     const initialState = {
         componentJSX: null,
         component: null,
+        toasts: [],
         modalProps: {},
         showModal: (componentJSX: JSX.Element) => {
             dispatch({type: "openModal", componentJSX});
@@ -162,6 +198,19 @@ const ModalProvider = ({children}: { children: any }) => {
                 }
             });
         },
+        showToast: (options: ToastOptions) => {
+            dispatch({
+                type: 'showToast',
+                toast: {...options, id: Math.random().toString(36).substring(7)},
+                componentProps: {...options}
+            })
+        },
+        hideToast: (toastId: string) => {
+            dispatch({
+                type: 'hideToast',
+                id: toastId
+            })
+        }
     };
 
     const [state, dispatch] = useReducer(reducer, initialState);
