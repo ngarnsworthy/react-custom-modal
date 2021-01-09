@@ -4,14 +4,26 @@ import {closeIcon, iconIllustrationTypes} from "./SvgIcons";
 
 interface IToasts {
     toasts: Array<IToast>;
-    hideToast: (toastId:string) => void;
+    hideToast: (toastId: string) => void;
 }
 
-export default function Toast({toasts, hideToast}:IToasts) {
+export enum ToastPosition {
+    TOP_RIGHT = 'top-right',
+    BOTTOM_RIGHT = 'bottom-right',
+    BOTTOM_CENTER = 'bottom-center'
+}
+
+let DefaultToastPosition = ToastPosition.BOTTOM_RIGHT;
+
+export const setToastPosition = (position: ToastPosition) => {
+    DefaultToastPosition = position;
+}
+
+export default function Toast({toasts, hideToast}: IToasts) {
 
     return (
-        <div className={'toast-container'}>
-            {toasts.map(toast=><ToastItem toast={toast} hideToast={hideToast} />)}
+        <div className={`toast-container toast-${DefaultToastPosition}`}>
+            {toasts.map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
         </div>
     )
 
@@ -20,7 +32,7 @@ export default function Toast({toasts, hideToast}:IToasts) {
 interface IProps {
     toast: IToast,
     animationType?: AnimationType;
-    hideToast: (toastId:string) => void;
+    hideToast: (toastId: string) => void;
 }
 
 function ToastItem({toast, hideToast}: IProps) {
@@ -34,9 +46,12 @@ function ToastItem({toast, hideToast}: IProps) {
     useEffect(() => {
         if (toastData && !toast) {
             hideMe();
-        } else if (toast) {
+        } else if (toast && !toastData) {
             showMe();
-            timeout = setTimeout(hideMe,1000)
+            if (toast.timeoutDuration) {
+                timeout = setTimeout(hideMe, toast.timeoutDuration)
+            }
+
         }
         return () => clearTimeout(timeout);
     }, [toast])
@@ -47,7 +62,7 @@ function ToastItem({toast, hideToast}: IProps) {
             setToast(toast);
         }
 
-        if (animation.out){
+        if (animation.out) {
             timeout = setTimeout(() => {
                 setToast(null);
                 hideToast(toast.id);
@@ -57,11 +72,19 @@ function ToastItem({toast, hideToast}: IProps) {
     }, [animation])
 
     const hideMe = useCallback(() => {
-        setAnimation({out: 'animate__animated animate__slideOutRight animate__faster', in: ''})
+        if (DefaultToastPosition === ToastPosition.BOTTOM_CENTER) {
+            setAnimation({out: 'animate__animated animate__slideOutDown animate__faster', in: ''})
+        } else {
+            setAnimation({out: 'animate__animated animate__slideOutRight animate__faster', in: ''})
+        }
     }, []);
 
     const showMe = useCallback(() => {
-        setAnimation({in: 'animate__animated animate__slideInRight animate__faster', out: ''})
+        if (DefaultToastPosition === ToastPosition.BOTTOM_CENTER) {
+            setAnimation({in: 'animate__animated animate__slideInUp animate__faster', out: ''})
+        } else {
+            setAnimation({in: 'animate__animated animate__slideInRight animate__faster', out: ''})
+        }
     }, []);
 
     if (!toastData)

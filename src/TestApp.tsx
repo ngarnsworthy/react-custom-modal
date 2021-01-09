@@ -11,7 +11,7 @@ const MyComponent = () => {
 
     }
 
-    const {showAlert, showOptionDialog, showInputDialog, showModal, showToast, hideToast} = usePopup();
+    const {showAlert, showOptionDialog, showInputDialog, showModal, showToast} = usePopup();
 
     return (
         <>
@@ -22,9 +22,7 @@ const MyComponent = () => {
             <button onClick={() => showAlert({type: DialogType.INFO, text: 'test', title: 'test'})}>Show Alert</button>
             <button onClick={() => showOptionDialog({text: 'test', title: 'test'})}>Show Option Dialog
             </button>
-            <button onClick={() => showToast({text: 'wd;lmakldwadnajkldnklad nadnlkawndklkndlakwn', type: DialogType.INFO, animationType: AnimationType.SLIDE_IN_RIGHT})}>Show Toast
-            </button>
-            <button onClick={() => hideToast()}>Hide Toast
+            <button onClick={() => showToast({text: 'Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum', type: DialogType.INFO, timeoutDuration: 5000})}>Show Toast
             </button>
             <button onClick={() => showInputDialog({
                 title: 'test',

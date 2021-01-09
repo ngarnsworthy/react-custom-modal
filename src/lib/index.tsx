@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import {ModalRoot} from "./component";
 import Dialog from "./Dialog";
+import {ToastPosition} from "./Toast";
 
 export enum AnimationType {
     ZOOM_IN = 'ZOOM_IN',
@@ -88,6 +89,8 @@ export interface ToastOptions {
     text: string;
     type: DialogType;
     animationType?: AnimationType
+    position?: ToastPosition
+    timeoutDuration?: number
 }
 
 const ModalContext = createContext({
