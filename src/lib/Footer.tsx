@@ -9,8 +9,8 @@ export default function Footer({optionsToRender}: IProps) {
     return (
         <div className={'footer'}>
             <div className={'options-container'}>
-                {optionsToRender.map((option) => (
-                    <button className={'option-button'} onClick={option.onClick}>
+                {optionsToRender.map((option,index) => (
+                    <button key={`option${index}`} className={'option-button'} onClick={option.onClick}>
                         {option.name}
                     </button>
                 ))}

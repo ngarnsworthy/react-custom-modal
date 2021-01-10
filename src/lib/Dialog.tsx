@@ -92,12 +92,11 @@ const Dialog = (props: DialogProps) => {
         <div className={'dialog-wrapper'}>
             <Header showCloseButton={showCloseButton} type={type} hideModal={hideModal} title={title}/>
             {text && text !== "" ? <div className={'body-text'}>{text}</div> : null}
-
             {isInput && (
                 <div className={'inputs-container'}>
                     <>
-                        {inputsToRender.map((item) =>
-                            <div className={'input-container'}>
+                        {inputsToRender.map((item,index) =>
+                            <div key={`input${index}`} className={'input-container'}>
                                 {item.inputType !== 'image' ? (
                                         <Input item={item} setInputValues={setInputValues} inputValues={inputValues}/>) :
                                     <ImageInput item={item} setInputValues={setInputValues}
@@ -107,7 +106,6 @@ const Dialog = (props: DialogProps) => {
                     </>
                 </div>
             )}
-
             <Footer optionsToRender={optionsToRender}/>
         </div>
     );

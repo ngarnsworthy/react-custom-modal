@@ -3,7 +3,7 @@ import {AnimationType, IToast, ToastOptions} from "./index";
 import {closeIcon, iconIllustrationTypes} from "./SvgIcons";
 
 interface IToasts {
-    toasts: Array<IToast>;
+    toasts?: Array<IToast>;
     hideToast: (toastId: string) => void;
 }
 
@@ -23,7 +23,7 @@ export default function Toast({toasts, hideToast}: IToasts) {
 
     return (
         <div className={`toast-container toast-${DefaultToastPosition}`}>
-            {toasts.map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+            {toasts && toasts.map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
         </div>
     )
 
@@ -91,18 +91,17 @@ function ToastItem({toast, hideToast}: IProps) {
         return null;
 
     return (
-        <div className={`toast-${toastData.type} toast ${animation.in} ${animation.out}`}>
+        <div className={`toast-${toastData.type} toast ${animation.in} ${animation.out}`} style={{...toast.containerStyle}}>
             <div style={{
                 width: '90%',
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: "center",
                 alignItems: 'center'
             }}>
                 <div>
                     {iconIllustrationTypes[toastData.type]}
                 </div>
-                <div className={'toast-text'}>
+                <div className={'toast-text'} style={{...toast.textStyle}}>
                     {toast.id} <br/>
                     {toastData.text}
                 </div>

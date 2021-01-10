@@ -4,8 +4,8 @@ import {AnimationType} from "./index";
 interface IProps {
     hideModal: ()=> void;
     animationType: AnimationType;
-    Component: () => JSX.Element;
-    ComponentJSX: JSX.Element;
+    Component?: () => JSX.Element;
+    ComponentJSX?: JSX.Element;
     componentProps: React.ComponentProps<any>
 }
 
@@ -45,7 +45,8 @@ export default function Modal({hideModal, animationType, Component, ComponentJSX
         <ModalWrapper>
             <ModalBackdrop onClick={hideModal}/>
             <div className={animationClass}>
-                {ComponentJSX ? ComponentJSX : <Component hideModal={hideModal} {...componentProps}/>}
+                {ComponentJSX && ComponentJSX}
+                {Component && <Component hideModal={hideModal} {...componentProps}/>}
             </div>
         </ModalWrapper>
     )

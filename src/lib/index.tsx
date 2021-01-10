@@ -64,16 +64,13 @@ interface InputDialogOptions {
     options?: Array<OptionDialogButton>;
     onConfirm?: (result?: DynamicObject) => void;
     onCancel?: () => void;
-    label?: string;
     confirmText?: string;
     cancelText?: string;
-    imageProps?: { multiple: boolean };
     inputs?: Array<InputProps>;
     input?: InputProps;
-    multiple?: boolean;
     onDismissed?: () => void;
     showCloseButton?: boolean;
-    animationType?: AnimationType
+    animationType?: AnimationType;
 }
 
 interface AlertOptions {
@@ -88,48 +85,45 @@ interface AlertOptions {
 export interface ToastOptions {
     text: string;
     type: DialogType;
-    animationType?: AnimationType
-    position?: ToastPosition
-    timeoutDuration?: number
+    position?: ToastPosition;
+    timeoutDuration?: number;
+    containerStyle?: React.CSSProperties,
+    textStyle?: React.CSSProperties
 }
 
-const ModalContext = createContext({
-    component: () => <div>No modal component supplied</div>,
-    componentJSX: <div></div>,
-    componentProps: {
-        animationType: AnimationType.SLIDE_IN_RIGHT
-    },
-    toasts: [{
-        type: DialogType.DANGER,
-        text: '',
-        id: ''
-    }],
-    // @ts-ignore
-    showModal: (component: JSX.Element) => {
-    },
-    hideModal: () => {
-    },
-    // @ts-ignore
-    showAlert: (options: AlertOptions) => {
-    },
-    hideAlert: () => {
-    },
-    // @ts-ignore
-    showOptionDialog: (options: OptionDialogOptions) => {
-    },
-    // @ts-ignore
-    showInputDialog: (options: InputDialogOptions) => {
-    },
-    // @ts-ignore
-    showToast: (options: ToastOptions) => {
-    },
-    hideToast: () => {
-
-    }
-
-});
-
 export type IToast = ToastOptions & { id: string };
+
+interface PopupContext {
+    component?: () => JSX.Element;
+    componentJSX?: JSX.Element;
+    componentProps?: React.ComponentProps<any>;
+    toasts?: Array<IToast>;
+    showModal: (component: JSX.Element) => void;
+    hideModal: () => void;
+    showAlert:(options:AlertOptions) => void;
+    hideAlert: () => void;
+    showOptionDialog: (options: OptionDialogOptions) => void;
+    showInputDialog: (options: InputDialogOptions) => void;
+    showToast: (options: ToastOptions) => void;
+    hideToast: (toastId: string) => void;
+}
+
+let DefaultPopupActions: PopupContext = {
+    showModal: (_component: JSX.Element) => null,
+    hideModal: () => null,
+    showAlert:(_options:AlertOptions) => null,
+    hideAlert: () => null,
+    showOptionDialog: (_options: OptionDialogOptions) => null,
+    showInputDialog: (_options: InputDialogOptions) => null,
+    showToast: (_options: ToastOptions) => null,
+    hideToast: (_toastId: string) => null,
+}
+
+let ExportedPopupActions: Omit<PopupContext, 'componentProps' | 'component' | 'componentJSX' | 'toasts'> = {
+    ...DefaultPopupActions
+}
+
+const ModalContext = createContext<PopupContext>(DefaultPopupActions);
 
 const {Provider, Consumer: ModalConsumer} = ModalContext;
 
@@ -156,13 +150,13 @@ const reducer = (state: any, {
     }
 };
 
-const ModalProvider = ({children}: { children: any }) => {
+const PopupProvider = ({children}: { children: any }) => {
 
-    const initialState = {
-        componentJSX: null,
-        component: null,
+    const initialState: PopupContext = {
+        componentJSX: undefined,
+        component: undefined,
+        componentProps: {},
         toasts: [],
-        modalProps: {},
         showModal: (componentJSX: JSX.Element) => {
             dispatch({type: "openModal", componentJSX});
         },
@@ -208,13 +202,15 @@ const ModalProvider = ({children}: { children: any }) => {
                 componentProps: {...options}
             })
         },
-        hideToast: (toastId: string) => {
+        hideToast: (toastId?: string) => {
             dispatch({
                 type: 'hideToast',
                 id: toastId
             })
         }
     };
+
+    ExportedPopupActions = initialState;
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -245,4 +241,6 @@ const ModalProvider = ({children}: { children: any }) => {
 
 const usePopup = () => useContext(ModalContext);
 
-export {ModalConsumer, ModalProvider, usePopup};
+
+
+export {ModalConsumer, PopupProvider, usePopup, ExportedPopupActions as PopupActions};
