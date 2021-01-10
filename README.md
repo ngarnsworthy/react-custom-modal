@@ -2,6 +2,8 @@
 
 react-custom-popup is a plain React package for dealing with popups such as input-dialogs, modals, alerts, toasts.
 
+[LIVE DEMO](https://rafaa17.github.io/react-custom-modal/)
+
 ## Installation
 
 ```bash
