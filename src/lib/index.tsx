@@ -98,7 +98,7 @@ interface PopupContext {
     componentJSX?: JSX.Element;
     componentProps?: React.ComponentProps<any>;
     toasts?: Array<IToast>;
-    showModal: (component: JSX.Element) => void;
+    showModal: (component: JSX.Element, animationType?: AnimationType) => void;
     hideModal: () => void;
     showAlert:(options:AlertOptions) => void;
     hideAlert: () => void;
@@ -109,7 +109,7 @@ interface PopupContext {
 }
 
 let DefaultPopupActions: PopupContext = {
-    showModal: (_component: JSX.Element) => null,
+    showModal: (_component: JSX.Element, _animationType?: AnimationType) => null,
     hideModal: () => null,
     showAlert:(_options:AlertOptions) => null,
     hideAlert: () => null,
@@ -157,8 +157,8 @@ const PopupProvider = ({children}: { children: any }) => {
         component: undefined,
         componentProps: {},
         toasts: [],
-        showModal: (componentJSX: JSX.Element) => {
-            dispatch({type: "openModal", componentJSX});
+        showModal: (componentJSX: JSX.Element, animationType?: AnimationType) => {
+            dispatch({type: "openModal", componentJSX, componentProps: {animationType}});
         },
         hideModal: () => {
             dispatch({type: "hideModal"});

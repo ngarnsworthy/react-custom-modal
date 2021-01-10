@@ -69,7 +69,7 @@ usePopup() / PopupActions expose:
 
 *   showAlert(options:AlertOptions)
 *   hideAlert()
-*   showModal(component: JSX.Element)
+*   showModal(component: JSX.Element, animationType: AnimationType)
 *   hideModal()
 *   showOptionDialog(options: OptionDialogOptions)
 *   showInputDialog(options: InputDialogOptions)
