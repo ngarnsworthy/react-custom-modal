@@ -102,7 +102,6 @@ function ToastItem({toast, hideToast}: IProps) {
                     {iconIllustrationTypes[toastData.type]}
                 </div>
                 <div className={'react-custom-toast-text'} style={{...toast.textStyle}}>
-                    {toast.id} <br/>
                     {toastData.text}
                 </div>
             </div>
