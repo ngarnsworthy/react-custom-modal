@@ -12,13 +12,13 @@ interface IProps {
 const Header = ({showCloseButton, type, hideModal, title}: IProps) => {
 
     return (
-        <div className={`header header-${type}`}>
+        <div className={`react-custom-header react-custom-header-${type}`}>
             {iconIllustrationTypes[type]}
             {showCloseButton && (
                 <div style={{position: 'absolute', right: 20, cursor: 'pointer'}}
                      onClick={hideModal}>{closeIcon()}</div>
             )}
-            <div className={`title ${iconIllustrationTypes[type] ? 'title-margin' : ''}`}>{title}</div>
+            <div className={`react-custom-title ${iconIllustrationTypes[type] ? 'react-custom-title-margin' : ''}`}>{title}</div>
         </div>
     )
 

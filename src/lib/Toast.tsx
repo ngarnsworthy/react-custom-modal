@@ -22,7 +22,7 @@ export const setToastPosition = (position: ToastPosition) => {
 export default function Toast({toasts, hideToast}: IToasts) {
 
     return (
-        <div className={`toast-container toast-${DefaultToastPosition}`}>
+        <div className={`react-custom-toast-container react-custom-toast-${DefaultToastPosition}`}>
             {toasts && toasts.map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
         </div>
     )
@@ -91,7 +91,7 @@ function ToastItem({toast, hideToast}: IProps) {
         return null;
 
     return (
-        <div className={`toast-${toastData.type} toast ${animation.in} ${animation.out}`} style={{...toast.containerStyle}}>
+        <div className={`react-custom-toast-${toastData.type} react-custom-toast ${animation.in} ${animation.out}`} style={{...toast.containerStyle}}>
             <div style={{
                 width: '90%',
                 display: 'flex',
@@ -101,7 +101,7 @@ function ToastItem({toast, hideToast}: IProps) {
                 <div>
                     {iconIllustrationTypes[toastData.type]}
                 </div>
-                <div className={'toast-text'} style={{...toast.textStyle}}>
+                <div className={'react-custom-toast-text'} style={{...toast.textStyle}}>
                     {toast.id} <br/>
                     {toastData.text}
                 </div>

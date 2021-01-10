@@ -2,12 +2,12 @@
   --animate-duration: 600ms;
 }
 
-.srm-modal-open {
+.react-custom-open {
   position: relative;
   overflow: hidden;
 }
 
-.srm-modal-backdrop {
+.react-custom-modal-backdrop {
   top: 0;
   left: 0;
   right: 0;
@@ -18,7 +18,7 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
-.srm-modal-wrapper {
+.react-custom-modal-wrapper {
   top: 0;
   left: 0;
   right: 0;
@@ -33,7 +33,7 @@
   justify-content: center;
 }
 
-.dialog-wrapper {
+.react-custom-dialog-wrapper {
   min-height: 25%;
   min-width: 300px;
   max-width: 500px;
@@ -47,22 +47,22 @@
   flex-direction: column;
 }
 
-.title {
+.react-custom-title {
   font-weight: 500;
   font-size: larger;
 }
 
-.title-margin {
+.react-custom-title-margin {
   margin-left: 10px;
 }
 
-.body-text {
+.react-custom-body-text {
   font-size: medium;
   text-align: left;
   padding: 20px;
 }
 
-.header {
+.react-custom-header {
   padding: 15px 20px;
   text-align: left;
   flex-direction: row;
@@ -70,11 +70,11 @@
   align-items: center;
 }
 
-.toast-container {
+.react-custom-toast-container {
   position: fixed;
 }
 
-.toast {
+.react-custom-toast {
   min-width: 200px;
   max-width: 300px;
   padding: 20px;
@@ -86,17 +86,17 @@
   margin-top: 10px;
 }
 
-.toast-bottom-right {
+.react-custom-toast-bottom-right {
   right: 10px;
   bottom: 10px;
 }
 
-.toast-top-right {
+.react-custom-toast-top-right {
   top: 10px;
   right: 10px;
 }
 
-.toast-bottom-center {
+.react-custom-toast-bottom-center {
   bottom: 10px;
   display: flex;
   flex-direction: column;
@@ -105,39 +105,38 @@
   right: 0;
 }
 
-
-.toast-text {
+.react-custom-toast-text {
   margin-left: 10px;
 }
 
-.header-info, .toast-info {
+.react-custom-header-info, .react-custom-toast-info {
   background-color: lightblue;
 }
 
-.header-success, .toast-success {
+.react-custom-header-success, .react-custom-toast-success {
   background-color: lightgreen;
 }
 
-.header-warning, .toast-warning {
+.react-custom-header-warning, .react-custom-toast-warning {
   background-color: orange;
 }
 
-.header-danger, .toast-danger {
+.react-custom-header-danger, .react-custom-toast-danger {
   background-color: coral;
 }
 
-.footer {
+.react-custom-footer {
   padding: 20px;
   text-align: right;
 }
 
-.options-container {
+.react-custom-options-container {
   display: flex;
   flex-flow: row wrap;
   flex-direction: row;
 }
 
-.option-button {
+.react-custom-option-button {
   border-radius: 5px;
   border: none;
   padding: 10px 20px;
@@ -149,19 +148,19 @@
   cursor: pointer;
 }
 
-.option-button:hover {
+.react-custom-option-button:hover {
   background-color: whitesmoke;
 }
 
-.inputs-container {
+.react-custom-inputs-container {
   padding: 20px;
 }
 
-.input-container {
+.react-custom-input-container {
   padding-bottom: 20px;
 }
 
-.input-item {
+.react-custom-input-item {
   padding: 10px;
   border: 1px solid gainsboro;
   border-radius: 5px;

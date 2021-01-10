@@ -89,14 +89,14 @@ const Dialog = (props: DialogProps) => {
     }
 
     return (
-        <div className={'dialog-wrapper'}>
+        <div className={'react-custom-dialog-wrapper'}>
             <Header showCloseButton={showCloseButton} type={type} hideModal={hideModal} title={title}/>
-            {text && text !== "" ? <div className={'body-text'}>{text}</div> : null}
+            {text && text !== "" ? <div className={'react-custom-body-text'}>{text}</div> : null}
             {isInput && (
-                <div className={'inputs-container'}>
+                <div className={'react-custom-inputs-container'}>
                     <>
                         {inputsToRender.map((item,index) =>
-                            <div key={`input${index}`} className={'input-container'}>
+                            <div key={`input${index}`} className={'react-custom-input-container'}>
                                 {item.inputType !== 'image' ? (
                                         <Input item={item} setInputValues={setInputValues} inputValues={inputValues}/>) :
                                     <ImageInput item={item} setInputValues={setInputValues}

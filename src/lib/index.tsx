@@ -1,8 +1,6 @@
 import React, {
     createContext,
-    useCallback,
     useContext,
-    useEffect,
     useReducer
 } from "react";
 import {ModalRoot} from "./component";
@@ -213,24 +211,8 @@ const PopupProvider = ({children}: { children: any }) => {
     ExportedPopupActions = initialState;
 
     const [state, dispatch] = useReducer(reducer, initialState);
-
-    const onKeyDown = useCallback(
-        e => {
-            if (e.key === "Escape") {
-                state.hideModal();
-            }
-        },
-        [state]
-    );
-
-    useEffect(() => {
-        state.component === null
-            ? document.addEventListener("keydown", onKeyDown)
-            : document.removeEventListener("keydown", onKeyDown);
-    }, [onKeyDown, state.component]);
-
     return (
-        <div onKeyDown={onKeyDown} className="simple-react-modals">
+        <div>
             <Provider value={state}>
                 <ModalRoot/>
                 {children}

@@ -16,7 +16,7 @@ export default function Input({item, setInputValues, inputValues}: IProps) {
             </label>
             {item.inputType && item.inputType !== "textarea" ? (
                 <input
-                    className={'input-item'}
+                    className={'react-custom-input-item'}
                     onChange={(val) => {
                         setInputValues({
                             ...inputValues,
@@ -46,7 +46,7 @@ export default function Input({item, setInputValues, inputValues}: IProps) {
                     value={
                         inputValues[item.name] ? inputValues[item.name] : null
                     }
-                    className={'input-item'}
+                    className={'react-custom-input-item'}
                     id={item.name}
                     placeholder={item.placeholder}
                 />

@@ -55,22 +55,22 @@ export default function Modal({hideModal, animationType, Component, ComponentJSX
 
 const ModalBackdrop = ({onClick}: { onClick: () => void }) => {
     useEffect(() => {
-        document.body.classList.add("srm-modal-open");
+        document.body.classList.add("react-custom-modal-open");
 
         return () => {
-            document.body.classList.remove("srm-modal-open");
+            document.body.classList.remove("react-custom-modal-open");
         };
     }, []);
 
     return (
         <div
             onClick={onClick}
-            className={`srm-modal-backdrop`}
+            className={`react-custom-modal-backdrop`}
         >
         </div>
     );
 };
 
 const ModalWrapper = ({children}: { children: any }) => (
-    <div className="srm-modal-wrapper">{children}</div>
+    <div className="react-custom-modal-wrapper">{children}</div>
 );

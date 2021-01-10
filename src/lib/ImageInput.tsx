@@ -77,7 +77,7 @@ export default function ImageInput({setInputValues, inputValues, item}: IProps) 
                     }}
                     value={inputRef.current ? inputRef.current.value : ""}
                     multiple={item.multiple || false}
-                    className={'input-item'}
+                    className={'react-custom-input-item'}
                     onChange={(val) => readImage(val)}
                     style={{display: "none"}}
                     id={"image"}
