@@ -105,8 +105,6 @@ const Dialog = (props: DialogProps) => {
         else inputsToRender = inputs;
     }
 
-    console.log(optionsToRender)
-
     return (
         <div className={'react-custom-dialog-wrapper'} style={{...containerStyle}}>
             <Header headerStyle={headerStyle} headerTextStyle={headerTextStyle} showCloseButton={showCloseButton}
