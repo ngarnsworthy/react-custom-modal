@@ -8,13 +8,23 @@ import Dialog from "./Dialog";
 import {ToastPosition} from "./Toast";
 
 export enum AnimationType {
-    ZOOM_IN = 'ZOOM_IN',
-    FADE_IN = 'FADE_IN',
-    FLASH = 'FLASH',
-    SWING = 'SWING',
-    HEART_BEAT = 'HEART_BEAT',
-    SLIDE_IN_LEFT = 'SLIDE_IN_LEFT',
-    SLIDE_IN_RIGHT = 'SLIDE_IN_RIGHT'
+    FADE_IN = 'fadeIn',
+    FADE_IN_UP = 'fadeInUp',
+    FLASH = 'flash',
+    HEART_BEAT = 'heartBeat',
+    SLIDE_IN_LEFT = 'slideInLeft',
+    SLIDE_IN_RIGHT = 'slideInRight',
+    SLIDE_IN_UP = 'slideInUp',
+    SWING = 'swing',
+    ZOOM_IN = 'zoomIn'
+}
+
+export enum OutAnimationType {
+    FADE_OUT = 'fadeOut',
+    SLIDE_OUT_LEFT = 'slideOutLeft',
+    SLIDE_OUT_RIGHT = 'slideOutRight',
+    SLIDE_OUT_UP = 'slideOutUp',
+    ZOOM_OUT = 'zoomOut'
 }
 
 export enum DialogType {
@@ -26,29 +36,38 @@ export enum DialogType {
 
 export interface OptionDialogButton {
     name: string;
-    onClick: () => void
+    onClick: () => void;
+    color?: string;
 }
 
 interface OptionDialogOptions {
-    title?: string,
-    text?: string;
-    type?: DialogType;
-    optionButtons?: Array<OptionDialogButton>;
-    onConfirm?: () => void;
-    onCancel?: () => void;
-    confirmText?: string;
+    animationType?: AnimationType;
+    outAnimationType?: OutAnimationType;
     cancelText?: string;
+    confirmText?: string;
+    containerStyle?: React.CSSProperties;
+    footerStyle?: React.CSSProperties;
+    headerStyle?: React.CSSProperties;
+    headerTextStyle?: React.CSSProperties;
+    onCancel?: () => void;
+    onConfirm?: () => void;
+    optionButtons?: Array<OptionDialogButton>;
     showCloseButton?: boolean;
-    animationType?: AnimationType
+    text?: string;
+    textStyle?: React.CSSProperties;
+    title?: string,
+    type?: DialogType;
+    bodyComponent?: JSX.Element;
+    allowOutsideClick?: boolean;
 }
 
 export interface InputProps {
-    placeholder?: string;
-    label?: string;
-    inputType: 'text' | 'file' | 'number' | 'image' | 'textarea' | 'date';
-    name: string;
     default?: string;
+    inputType: 'text' | 'file' | 'number' | 'image' | 'textarea' | 'date';
+    label?: string;
     multiple?: boolean;
+    name: string;
+    placeholder?: string;
 }
 
 export interface DynamicObject {
@@ -56,37 +75,53 @@ export interface DynamicObject {
 }
 
 interface InputDialogOptions {
-    title?: string;
-    text?: string;
-    type?: DialogType;
-    options?: Array<OptionDialogButton>;
-    onConfirm?: (result?: DynamicObject) => void;
-    onCancel?: () => void;
-    confirmText?: string;
-    cancelText?: string;
-    inputs?: Array<InputProps>;
-    input?: InputProps;
-    onDismissed?: () => void;
-    showCloseButton?: boolean;
     animationType?: AnimationType;
+    outAnimationType?: OutAnimationType;
+    cancelText?: string;
+    confirmText?: string;
+    containerStyle?: React.CSSProperties;
+    footerStyle?: React.CSSProperties;
+    headerStyle?: React.CSSProperties;
+    headerTextStyle?: React.CSSProperties;
+    input?: InputProps;
+    inputs?: Array<InputProps>;
+    onCancel?: () => void;
+    onConfirm?: (result?: DynamicObject) => void;
+    onDismissed?: () => void;
+    options?: Array<OptionDialogButton>;
+    showCloseButton?: boolean;
+    text?: string;
+    textStyle?: React.CSSProperties;
+    title?: string;
+    type?: DialogType;
+    allowOutsideClick?: boolean;
 }
 
 interface AlertOptions {
-    text?: string;
-    type?: DialogType;
-    title?: string;
+    animationType?: AnimationType;
+    outAnimationType?: OutAnimationType;
     confirmText?: string;
+    containerStyle?: React.CSSProperties;
+    footerStyle?: React.CSSProperties;
+    headerStyle?: React.CSSProperties;
+    headerTextStyle?: React.CSSProperties;
     showCloseButton?: boolean;
-    animationType?: AnimationType
+    text?: string;
+    textStyle?: React.CSSProperties;
+    title?: string;
+    type?: DialogType;
+    bodyComponent?: JSX.Element;
+    allowOutsideClick?: boolean;
 }
 
 export interface ToastOptions {
-    text: string;
-    type: DialogType;
+    containerStyle?: React.CSSProperties;
+    customComponent?: JSX.Element;
     position?: ToastPosition;
+    text: string;
+    textStyle?: React.CSSProperties,
     timeoutDuration?: number;
-    containerStyle?: React.CSSProperties,
-    textStyle?: React.CSSProperties
+    type: DialogType;
 }
 
 export type IToast = ToastOptions & { id: string };
@@ -96,9 +131,9 @@ interface PopupContext {
     componentJSX?: JSX.Element;
     componentProps?: React.ComponentProps<any>;
     toasts?: Array<IToast>;
-    showModal: (component: JSX.Element, animationType?: AnimationType) => void;
+    showModal: (component: JSX.Element, animationType?: AnimationType, outAnimationType?: OutAnimationType) => void;
     hideModal: () => void;
-    showAlert:(options:AlertOptions) => void;
+    showAlert: (options: AlertOptions) => void;
     hideAlert: () => void;
     showOptionDialog: (options: OptionDialogOptions) => void;
     showInputDialog: (options: InputDialogOptions) => void;
@@ -107,9 +142,9 @@ interface PopupContext {
 }
 
 let DefaultPopupActions: PopupContext = {
-    showModal: (_component: JSX.Element, _animationType?: AnimationType) => null,
+    showModal: (_component: JSX.Element, _animationType?: AnimationType, _outAnimationType?: OutAnimationType) => null,
     hideModal: () => null,
-    showAlert:(_options:AlertOptions) => null,
+    showAlert: (_options: AlertOptions) => null,
     hideAlert: () => null,
     showOptionDialog: (_options: OptionDialogOptions) => null,
     showInputDialog: (_options: InputDialogOptions) => null,
@@ -142,7 +177,7 @@ const reducer = (state: any, {
             return {...state, toasts: [...state.toasts, toast], componentProps};
         case "hideToast":
             const index = state.toasts.findIndex((t: { id: string | undefined; }) => t.id === id);
-            return {...state, toasts: [...state.toasts.slice(0, index), ...state.toasts.slice(index+1)]};
+            return {...state, toasts: [...state.toasts.slice(0, index), ...state.toasts.slice(index + 1)]};
         default:
             throw new Error("Unspecified reducer action");
     }
@@ -155,8 +190,8 @@ const PopupProvider = ({children}: { children: any }) => {
         component: undefined,
         componentProps: {},
         toasts: [],
-        showModal: (componentJSX: JSX.Element, animationType?: AnimationType) => {
-            dispatch({type: "openModal", componentJSX, componentProps: {animationType}});
+        showModal: (componentJSX: JSX.Element, animationType?: AnimationType, outAnimationType?: OutAnimationType) => {
+            dispatch({type: "openModal", componentJSX, componentProps: {animationType, outAnimationType}});
         },
         hideModal: () => {
             dispatch({type: "hideModal"});
@@ -222,7 +257,6 @@ const PopupProvider = ({children}: { children: any }) => {
 };
 
 const usePopup = () => useContext(ModalContext);
-
 
 
 export {ModalConsumer, PopupProvider, usePopup, ExportedPopupActions as PopupActions};

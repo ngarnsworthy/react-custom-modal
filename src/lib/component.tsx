@@ -22,7 +22,7 @@ export const ModalRoot = () => {
     return (
         <>
             <Modal componentProps={componentProps} Component={Component} ComponentJSX={ComponentJSX}
-                   hideModal={hideModal} animationType={componentProps.animationType}/>
+                   hideModal={hideModal} />
             <Toast hideToast={hideToast} toasts={toasts}/>
         </>
     )

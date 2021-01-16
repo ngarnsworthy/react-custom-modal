@@ -1,6 +1,6 @@
 # react-custom-popup
 
-react-custom-popup is a plain React package for dealing with popups such as input-dialogs, modals, alerts, toasts.
+react-custom-popup is a fully customizable React library for dealing with popups such as input-dialogs, modals, alerts, toasts.
 
 [LIVE DEMO](https://rafaa17.github.io/react-custom-modal/)
 
@@ -79,12 +79,20 @@ usePopup() / PopupActions expose:
 
 ```typescript
 interface AlertOptions {
-    text?: string;
-    type?: DialogType;
-    title?: string;
-    confirmText?: string;
-    showCloseButton?: boolean;
     animationType?: AnimationType;
+    outAnimationType?: OutAnimationType;
+    confirmText?: string;
+    containerStyle?: React.CSSProperties;
+    footerStyle?: React.CSSProperties;
+    headerStyle?: React.CSSProperties;
+    headerTextStyle?: React.CSSProperties;
+    showCloseButton?: boolean;
+    text?: string;
+    textStyle?: React.CSSProperties;
+    title?: string;
+    type?: DialogType;
+    bodyComponent?: JSX.Element;
+    allowOutsideClick?: boolean;
 }
 ```
 
@@ -92,21 +100,30 @@ interface AlertOptions {
 
 ```typescript
 interface OptionDialogOptions {
-    title?: string,
-    text?: string;
-    type?: DialogType;
-    optionButtons?: Array<OptionDialogButton>;
-    onConfirm?: () => void;
-    onCancel?: () => void;
-    confirmText?: string;
+    animationType?: AnimationType;
+    outAnimationType?: OutAnimationType;
     cancelText?: string;
+    confirmText?: string;
+    containerStyle?: React.CSSProperties;
+    footerStyle?: React.CSSProperties;
+    headerStyle?: React.CSSProperties;
+    headerTextStyle?: React.CSSProperties;
+    onCancel?: () => void;
+    onConfirm?: () => void;
+    optionButtons?: Array<OptionDialogButton>;
     showCloseButton?: boolean;
-    animationType?: AnimationType
+    text?: string;
+    textStyle?: React.CSSProperties;
+    title?: string,
+    type?: DialogType;
+    bodyComponent?: JSX.Element;
+    allowOutsideClick?: boolean;
 }
 
 interface OptionDialogButton {
     name: string;
-    onClick: () => void
+    onClick: () => void;
+    color?: string;
 }
 ```
 
@@ -114,19 +131,26 @@ interface OptionDialogButton {
 
 ```typescript
 interface InputDialogOptions {
-    title?: string;
-    text?: string;
-    type?: DialogType;
-    options?: Array<OptionDialogButton>;
-    onConfirm?: (result?: DynamicObject) => void;
-    onCancel?: () => void;
-    confirmText?: string;
-    cancelText?: string;
-    inputs?: Array<InputProps>;
-    input?: InputProps;
-    onDismissed?: () => void;
-    showCloseButton?: boolean;
     animationType?: AnimationType;
+    outAnimationType?: OutAnimationType;
+    cancelText?: string;
+    confirmText?: string;
+    containerStyle?: React.CSSProperties;
+    footerStyle?: React.CSSProperties;
+    headerStyle?: React.CSSProperties;
+    headerTextStyle?: React.CSSProperties;
+    input?: InputProps;
+    inputs?: Array<InputProps>;
+    onCancel?: () => void;
+    onConfirm?: (result?: DynamicObject) => void;
+    onDismissed?: () => void;
+    options?: Array<OptionDialogButton>;
+    showCloseButton?: boolean;
+    text?: string;
+    textStyle?: React.CSSProperties;
+    title?: string;
+    type?: DialogType;
+    allowOutsideClick?: boolean;
 }
 
 interface InputProps {
@@ -143,12 +167,13 @@ interface InputProps {
 
 ```typescript
 interface ToastOptions {
-    text: string;
-    type: DialogType;
+    containerStyle?: React.CSSProperties;
+    customComponent?: JSX.Element;
     position?: ToastPosition;
+    text: string;
+    textStyle?: React.CSSProperties,
     timeoutDuration?: number;
-    containerStyle?: React.CSSProperties,
-    textStyle?: React.CSSProperties
+    type: DialogType;
 }
 ```
 

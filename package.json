@@ -1,6 +1,6 @@
 {
   "name": "react-custom-popup",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "homepage": "https://Rafaa17.github.io/react-custom-modal",
   "description": "React Popup Library build using React Context API",
   "main": "build/index.js",
@@ -20,9 +20,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-demo": "react-scripts build && mv build build-demo",
+    "build-demo": "rm -rf build build-demo && react-scripts build && mv build build-demo",
     "deploy-demo": "gh-pages -d build-demo",
-    "build": "rollup -c",
+    "build": "rm -rf build && rollup -c",
     "start": "react-scripts start"
   },
   "author": "",

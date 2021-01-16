@@ -1,52 +1,71 @@
-import React, {useEffect} from 'react';
-import {AnimationType} from "./index";
+import React, {createElement, useCallback, useEffect, useState} from 'react';
 
 interface IProps {
-    hideModal: ()=> void;
-    animationType: AnimationType;
+    hideModal: () => void;
     Component?: () => JSX.Element;
     ComponentJSX?: JSX.Element;
     componentProps: React.ComponentProps<any>
 }
 
-export default function Modal({hideModal, animationType, Component, ComponentJSX, componentProps }:IProps) {
+export default function Modal({hideModal, Component, ComponentJSX, componentProps}: IProps) {
 
-    let animationClass = '';
+    const [ModalToRender, setModalToRender] = useState<JSX.Element | undefined>(undefined);
 
-    switch (animationType as AnimationType) {
-        case AnimationType.FADE_IN:
-            animationClass = 'animate__animated animate__fadeIn animate__faster';
-            break
-        case AnimationType.HEART_BEAT:
-            animationClass = 'animate__animated animate__heartBeat animate__faster';
-            break
-        case AnimationType.FLASH:
-            animationClass = 'animate__animated animate__flash animate__faster';
-            break
-        case AnimationType.SWING:
-            animationClass = 'animate__animated animate__swing animate__faster';
-            break
-        case AnimationType.ZOOM_IN:
-            animationClass = 'animate__animated animate__zoomIn animate__faster';
-            break
-        case AnimationType.SLIDE_IN_LEFT:
-            animationClass = 'animate__animated animate__slideInLeft animate__faster';
-            break
-        case AnimationType.SLIDE_IN_RIGHT:
-            animationClass = 'animate__animated animate__slideInRight animate__faster';
-            break
-    }
+    const [animation, setAnimation] = useState<{ in: string, out: string }>({in: '', out: ''});
 
-    if (!Component && !ComponentJSX){
+    const {animationType, outAnimationType, allowOutsideClick = true} = componentProps;
+
+    let timeout: NodeJS.Timeout;
+
+    useEffect(() => {
+        if (ModalToRender && !(Component || ComponentJSX)) {
+            hideMe();
+        } else if ((Component || ComponentJSX) && !ModalToRender) {
+            showMe();
+        }
+        return () => clearTimeout(timeout);
+    }, [Component, ComponentJSX])
+
+    useEffect(() => {
+
+        if (animation.in && (Component || ComponentJSX)) {
+            // @ts-ignore
+            let c: JSX.Element | undefined;
+            if (Component) {
+                c = createElement(Component, {
+                    ...componentProps, hideModal: hideModal
+                });
+            }
+            setModalToRender(ComponentJSX || c);
+        }
+
+        if (animation.out) {
+            if (!outAnimationType) {
+                setModalToRender(undefined);
+            } else
+                timeout = setTimeout(() => {
+                    setModalToRender(undefined);
+                }, 600);
+        }
+
+    }, [animation])
+
+    const hideMe = useCallback(() => {
+        setAnimation({out: `animate__animated animate__${outAnimationType} animate__faster`, in: ''})
+    }, [outAnimationType]);
+
+    const showMe = useCallback(() => {
+        setAnimation({out: '', in: `animate__animated animate__${animationType} animate__faster`})
+    }, [animationType]);
+
+    if (!ModalToRender)
         return null;
-    }
 
     return (
         <ModalWrapper>
-            <ModalBackdrop onClick={hideModal}/>
-            <div className={animationClass}>
-                {ComponentJSX && ComponentJSX}
-                {Component && <Component hideModal={hideModal} {...componentProps}/>}
+            <ModalBackdrop onClick={allowOutsideClick ? hideModal : ()=>{}}/>
+            <div className={animation.in || animation.out}>
+                {ModalToRender}
             </div>
         </ModalWrapper>
     )

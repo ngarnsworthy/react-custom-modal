@@ -91,19 +91,24 @@ function ToastItem({toast, hideToast}: IProps) {
         return null;
 
     return (
-        <div className={`react-custom-toast-${toastData.type} react-custom-toast ${animation.in} ${animation.out}`} style={{...toast.containerStyle}}>
+        <div className={`react-custom-toast-${toastData.type} react-custom-toast ${animation.in} ${animation.out}`}
+             style={{...toast.containerStyle}}>
             <div style={{
                 width: '90%',
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center'
             }}>
-                <div>
-                    {iconIllustrationTypes[toastData.type]}
-                </div>
-                <div className={'react-custom-toast-text'} style={{...toast.textStyle}}>
-                    {toastData.text}
-                </div>
+                {toast.customComponent || (
+                    <>
+                        <div>
+                            {iconIllustrationTypes[toastData.type]}
+                        </div>
+                        <div className={'react-custom-toast-text'} style={{...toast.textStyle}}>
+                            {toastData.text}
+                        </div>
+                    </>
+                )}
             </div>
             <div style={{width: "10%", cursor: 'pointer'}}
                  onClick={hideMe}>{closeIcon()}</div>

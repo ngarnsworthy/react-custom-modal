@@ -23,9 +23,16 @@ interface DialogProps {
     onDismissed: (result?: DynamicObject) => {},
     onOpened: (result?: DynamicObject) => {},
     input: InputProps,
+    headerTextStyle?: React.CSSProperties;
+    textStyle?: React.CSSProperties;
+    containerStyle?: React.CSSProperties;
+    headerStyle?: React.CSSProperties;
+    footerStyle?: React.CSSProperties;
+    bodyComponent?: JSX.Element;
 }
 
 const Dialog = (props: DialogProps) => {
+
     const {
         title,
         text,
@@ -42,6 +49,12 @@ const Dialog = (props: DialogProps) => {
         inputs = null,
         onDismissed = null,
         input,
+        headerTextStyle,
+        textStyle,
+        containerStyle,
+        headerStyle,
+        footerStyle,
+        bodyComponent
     } = props;
 
     const [inputValues, setInputValues] = useState<{ [key: string]: any }>(
@@ -58,16 +71,20 @@ const Dialog = (props: DialogProps) => {
                     name: cancelText,
                     onClick: () => {
                         hideModal();
-                        if (onCancel) onCancel();
-                        if (onDismissed && isInput) onDismissed(inputValues);
+                        setTimeout(() => {
+                            if (onCancel) onCancel();
+                            if (onDismissed && isInput) onDismissed(inputValues);
+                        })
                     },
                 },
                 {
                     name: confirmText,
                     onClick: () => {
                         hideModal();
-                        if (onConfirm) onConfirm(inputValues);
-                        if (onDismissed && isInput) onDismissed(inputValues);
+                        setTimeout(() => {
+                            if (onConfirm) onConfirm(inputValues);
+                            if (onDismissed && isInput) onDismissed(inputValues);
+                        })
                     },
                 },
             ];
@@ -88,25 +105,36 @@ const Dialog = (props: DialogProps) => {
         else inputsToRender = inputs;
     }
 
+    console.log(optionsToRender)
+
     return (
-        <div className={'react-custom-dialog-wrapper'}>
-            <Header showCloseButton={showCloseButton} type={type} hideModal={hideModal} title={title}/>
-            {text && text !== "" ? <div className={'react-custom-body-text'}>{text}</div> : null}
-            {isInput && (
-                <div className={'react-custom-inputs-container'}>
-                    <>
-                        {inputsToRender.map((item,index) =>
-                            <div key={`input${index}`} className={'react-custom-input-container'}>
-                                {item.inputType !== 'image' ? (
-                                        <Input item={item} setInputValues={setInputValues} inputValues={inputValues}/>) :
-                                    <ImageInput item={item} setInputValues={setInputValues}
-                                                inputValues={inputValues}/>}
-                            </div>
-                        )}
-                    </>
-                </div>
-            )}
-            <Footer optionsToRender={optionsToRender}/>
+        <div className={'react-custom-dialog-wrapper'} style={{...containerStyle}}>
+            <Header headerStyle={headerStyle} headerTextStyle={headerTextStyle} showCloseButton={showCloseButton}
+                    type={type}
+                    hideModal={hideModal} title={title}/>
+            {bodyComponent || (
+                <>
+                    {text && text !== "" ?
+                        <div className={'react-custom-body-text'} style={{...textStyle}}>{text}</div> : null}
+                    {isInput && (
+                        <div className={'react-custom-inputs-container'}>
+                            <>
+                                {inputsToRender.map((item, index) =>
+                                    <div key={`input${index}`} className={'react-custom-input-container'}>
+                                        {item.inputType !== 'image' ? (
+                                                <Input item={item} setInputValues={setInputValues}
+                                                       inputValues={inputValues}/>) :
+                                            <ImageInput item={item} setInputValues={setInputValues}
+                                                        inputValues={inputValues}/>}
+                                    </div>
+                                )}
+                            </>
+                        </div>
+                    )}
+                </>
+            )
+            }
+            <Footer footerStyle={footerStyle} optionsToRender={optionsToRender}/>
         </div>
     );
 };

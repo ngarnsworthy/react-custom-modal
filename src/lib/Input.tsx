@@ -26,7 +26,7 @@ export default function Input({item, setInputValues, inputValues}: IProps) {
                     }}
                     // @ts-ignore
                     value={
-                        inputValues[item.name] ? inputValues[item.name] : null
+                        inputValues[item.name] ? inputValues[item.name] : ''
                     }
                     id={item.name}
                     placeholder={item.placeholder}
@@ -44,7 +44,7 @@ export default function Input({item, setInputValues, inputValues}: IProps) {
                     }}
                     // @ts-ignore
                     value={
-                        inputValues[item.name] ? inputValues[item.name] : null
+                        inputValues[item.name] ? inputValues[item.name] : ''
                     }
                     className={'react-custom-input-item'}
                     id={item.name}
