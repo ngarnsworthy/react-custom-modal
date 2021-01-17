@@ -4,6 +4,8 @@ react-custom-popup is a fully customizable React library for dealing with popups
 
 [LIVE DEMO](https://rafaa17.github.io/react-custom-modal/)
 
+![DEMO GIF](https://drive.google.com/uc?export=view&id=1iH2sbIVo3_tPWBQiCH6bbdMrs8i1UUO0 "Title")
+
 ## Installation
 
 ```bash
