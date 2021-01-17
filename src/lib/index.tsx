@@ -63,11 +63,18 @@ interface OptionDialogOptions {
 
 export interface InputProps {
     default?: string;
-    inputType: 'text' | 'file' | 'number' | 'image' | 'textarea' | 'date';
+    inputType: 'text' | 'file' | 'number' | 'textarea' | 'date' | 'image';
     label?: string;
-    multiple?: boolean;
+    /*
+        The name that will be used in the response to read the value
+     */
     name: string;
     placeholder?: string;
+}
+
+export interface ImageInputProps extends InputProps{
+    inputType: 'image';
+    multiple?: boolean;
 }
 
 export interface DynamicObject {
@@ -83,8 +90,8 @@ interface InputDialogOptions {
     footerStyle?: React.CSSProperties;
     headerStyle?: React.CSSProperties;
     headerTextStyle?: React.CSSProperties;
-    input?: InputProps;
-    inputs?: Array<InputProps>;
+    input?: InputProps | ImageInputProps;
+    inputs?: Array<InputProps | ImageInputProps>;
     onCancel?: () => void;
     onConfirm?: (result?: DynamicObject) => void;
     onDismissed?: () => void;
@@ -118,20 +125,27 @@ export interface ToastOptions {
     containerStyle?: React.CSSProperties;
     customComponent?: JSX.Element;
     position?: ToastPosition;
-    text: string;
+    text?: string;
     textStyle?: React.CSSProperties,
     timeoutDuration?: number;
     type: DialogType;
+    showCloseButton?: boolean;
 }
 
 export type IToast = ToastOptions & { id: string };
+
+export interface ModalOptions {
+    animationType?: AnimationType,
+    outAnimationType?: OutAnimationType,
+    timeoutDuration?: number;
+}
 
 interface PopupContext {
     component?: () => JSX.Element;
     componentJSX?: JSX.Element;
     componentProps?: React.ComponentProps<any>;
     toasts?: Array<IToast>;
-    showModal: (component: JSX.Element, animationType?: AnimationType, outAnimationType?: OutAnimationType) => void;
+    showModal: (component: JSX.Element, options: ModalOptions) => void;
     hideModal: () => void;
     showAlert: (options: AlertOptions) => void;
     hideAlert: () => void;
@@ -142,7 +156,7 @@ interface PopupContext {
 }
 
 let DefaultPopupActions: PopupContext = {
-    showModal: (_component: JSX.Element, _animationType?: AnimationType, _outAnimationType?: OutAnimationType) => null,
+    showModal: (_component: JSX.Element, _options: ModalOptions) => null,
     hideModal: () => null,
     showAlert: (_options: AlertOptions) => null,
     hideAlert: () => null,
@@ -190,8 +204,8 @@ const PopupProvider = ({children}: { children: any }) => {
         component: undefined,
         componentProps: {},
         toasts: [],
-        showModal: (componentJSX: JSX.Element, animationType?: AnimationType, outAnimationType?: OutAnimationType) => {
-            dispatch({type: "openModal", componentJSX, componentProps: {animationType, outAnimationType}});
+        showModal: (componentJSX: JSX.Element, options: ModalOptions) => {
+            dispatch({type: "openModal", componentJSX, componentProps: {...options}});
         },
         hideModal: () => {
             dispatch({type: "hideModal"});

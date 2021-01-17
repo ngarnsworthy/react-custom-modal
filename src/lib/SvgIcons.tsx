@@ -1,6 +1,6 @@
 import React from "react";
 
-export const closeIcon = () => <svg color={'#484848'} height={20} width={20} aria-hidden="true" data-prefix="fas"
+export const closeIcon = (color:string = '#484848') => <svg color={color} height={20} width={20} aria-hidden="true" data-prefix="fas"
                                     data-icon="times"
                                     className="svg-inline--fa fa-times fa-w-11" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 352 512">

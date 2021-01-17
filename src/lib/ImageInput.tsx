@@ -1,5 +1,5 @@
 import React, {ChangeEvent, Dispatch, SetStateAction, useRef} from 'react';
-import {InputProps} from "./index";
+import {ImageInputProps, InputProps} from "./index";
 import {closeIcon} from "./SvgIcons";
 
 interface IProps {
@@ -32,9 +32,7 @@ export default function ImageInput({setInputValues, inputValues, item}: IProps) 
                 setInputValues({
                     ...inputValues,
                     // @ts-ignore
-                    images: inputValues.images
-                        ? [...inputValues.images, ...images]
-                        : [...images],
+                    [item.name]: [...images],
                 });
                 inputRef.current!.value! = "";
                 // event.target.reset();
@@ -45,38 +43,23 @@ export default function ImageInput({setInputValues, inputValues, item}: IProps) 
     return (
         <>
             <div style={{textAlign: "left"}}>
-                <label style={{display: "block"}}>{item.label || ''}</label>
+                <label style={{display: "block", marginBottom:5}}>{item.label || ''}</label>
                 <div
-                    style={{
-                        padding: 10,
-                        textAlign: "center",
-                        cursor: "pointer",
-                        width: "90%",
-                        borderRadius: 5,
-                        boxShadow: '#00000075 0px 0px 2px 0px',
-                        display: "inline-block",
-                    }}
+                    style={{cursor:'pointer'}}
+                    className={'react-custom-input-item select-image'}
                     onClick={() => {
                         if (inputRef.current) inputRef.current.click();
                     }}
                 >
                     Select Image
                 </div>
-                {inputValues &&
-                item.multiple &&
-                inputValues.images &&
-                inputValues.images.length > 0 ? (
-                    <div style={{margin: 5}}>
-                    {inputValues.images.length} images selected
-                  </div>
-                ) : null}
                 <input
                     ref={(ref) => {
                         // @ts-ignore
                         inputRef.current = ref;
                     }}
                     value={inputRef.current ? inputRef.current.value : ""}
-                    multiple={item.multiple || false}
+                    multiple={(item as ImageInputProps).multiple || false}
                     className={'react-custom-input-item'}
                     onChange={(val) => readImage(val)}
                     style={{display: "none"}}
@@ -86,13 +69,13 @@ export default function ImageInput({setInputValues, inputValues, item}: IProps) 
             </div>
             <div style={{textAlign: "left"}}>
                 {inputValues &&
-                inputValues.images &&
+                inputValues[item.name] &&
                 // @ts-ignore
-                inputValues.images.map((image, index) => (
+                inputValues[item.name].map((image, index) => (
                     <div
+                        className={'react-custom-input-img-container'}
+                        key={'image' + index}
                         style={{
-                            margin: 5,
-                            display: "inline-block",
                             position: "relative",
                         }}
                     >
@@ -103,8 +86,8 @@ export default function ImageInput({setInputValues, inputValues, item}: IProps) 
                                     ...inputValues,
                                     // @ts-ignore
                                     images: [
-                                        ...inputValues.images.slice(0, index),
-                                        ...inputValues.images.slice(index + 1),
+                                        ...inputValues[item.name].slice(0, index),
+                                        ...inputValues[item.name].slice(index + 1),
                                     ],
                                 })
                             }
@@ -115,7 +98,7 @@ export default function ImageInput({setInputValues, inputValues, item}: IProps) 
                                 right: 5,
                             }}
                         >
-                            {closeIcon()}
+                            {closeIcon('white')}
                         </div>
                     </div>
                 ))}

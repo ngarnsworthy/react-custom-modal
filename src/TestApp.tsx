@@ -1,6 +1,8 @@
 import React from 'react';
 import {AnimationType, DialogType, OutAnimationType, PopupActions, PopupProvider, usePopup} from './lib'
 
+import './TestApp.css'
+
 function callMe() {
     PopupActions.showToast({text: 'test', type: DialogType.DANGER});
 }
@@ -8,8 +10,6 @@ function callMe() {
 const MyComponent = () => {
 
     const TestComponent = (props: { a: string }) => {
-
-        const {hideModal} = usePopup();
 
         return (
             <div style={{background: 'white', borderRadius: 5, width: 500, padding: 20}}>
@@ -26,7 +26,6 @@ const MyComponent = () => {
                 </p>
                 Received
                 Props: {JSON.stringify(props)}
-                <button onClick={hideModal}>Hide Me</button>
             </div>
         )
 
@@ -41,102 +40,133 @@ const MyComponent = () => {
 
     return (
         <>
-            <button style={buttonStyles}
-                    onClick={() => showModal(<TestComponent a={'test'}/>, AnimationType.SLIDE_IN_UP, OutAnimationType.SLIDE_OUT_UP)}>Show Modal
-            </button>
-            <button style={buttonStyles} onClick={() => showAlert({
+            <h2>Modal</h2>
+            <div className={'example-button'} style={buttonStyles}
+                 onClick={() => showModal(<TestComponent a={'test'}/>, {
+                     animationType: AnimationType.SLIDE_IN_UP,
+                     outAnimationType: OutAnimationType.SLIDE_OUT_UP
+                 })}>Modal
+            </div>
+
+            <h2>Alert</h2>
+            <div className={'example-button'} style={buttonStyles} onClick={() => showAlert({
                 type: DialogType.DANGER,
                 text: 'Text',
                 title: 'Title',
                 animationType: AnimationType.FADE_IN,
                 outAnimationType: OutAnimationType.FADE_OUT
-            })}>Show Danger Alert
-            </button>
-            <button style={buttonStyles} onClick={() => showAlert({
-                type: DialogType.WARNING,
-                text: 'Text',
-                title: 'Title',
-                animationType: AnimationType.FADE_IN,
-                bodyComponent: <TestComponent a={'a'} />
-            })}>Show Custom Content Alert
-            </button>
-            <button style={buttonStyles} onClick={() => showAlert({
+            })}>Danger Alert
+            </div>
+            <div className={'example-button'} style={buttonStyles} onClick={() => showAlert({
                 type: DialogType.WARNING,
                 text: 'Text',
                 title: 'Title',
                 animationType: AnimationType.ZOOM_IN
-            })}>Show Warning Alert
-            </button>
-            <button style={buttonStyles}
-                    onClick={() => showAlert({
-                        type: DialogType.SUCCESS, text: 'Text',
-                        title: 'Title',
-                    })}>Show Success
+            })}>Warning Alert
+            </div>
+            <div className={'example-button'} style={buttonStyles}
+                 onClick={() => showAlert({
+                     type: DialogType.SUCCESS, text: 'Text',
+                     title: 'Title',
+                 })}>Success
                 Alert
-            </button>
-            <button style={buttonStyles}
-                    onClick={() => showAlert({
-                        type: DialogType.INFO, text: 'Text',
-                        title: 'Title',
-                        allowOutsideClick: false
-                    })}>Show Info Alert
-            </button>
-            <button style={buttonStyles} onClick={() => showOptionDialog({
+            </div>
+            <div className={'example-button'} style={buttonStyles}
+                 onClick={() => showAlert({
+                     type: DialogType.INFO, text: 'Text',
+                     title: 'Title',
+                     allowOutsideClick: false
+                 })}>Info Alert
+            </div>
+            <div className={'example-button'} style={buttonStyles} onClick={() => showAlert({
+                type: DialogType.WARNING,
                 text: 'Text',
                 title: 'Title',
-            })}>Show Option
-                Dialog
-            </button>
-            <button style={buttonStyles} onClick={() => showToast({
-                text: 'Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum',
-                type: DialogType.INFO,
-                timeoutDuration: 5000
-            })}>Show Toast
-            </button>
-            <button style={buttonStyles} onClick={() => showInputDialog({
-                title: 'Choose Image',
-                input: {inputType: 'image', name: 'testinput'},
-                onConfirm: (response) => {
-                    showAlert({title: 'Result', text: JSON.stringify(response)});
-                }
-            })}>Show Input Dialog
-            </button>
-
-            <button style={buttonStyles} onClick={() => showInputDialog({
+                animationType: AnimationType.FADE_IN,
+                bodyComponent: <TestComponent a={'a'}/>
+            })}>Custom Content Alert
+            </div>
+            <div className={'example-button'} style={buttonStyles} onClick={() => showOptionDialog({
+                text: 'Text',
                 title: 'Title',
-                inputs: [{inputType: 'text', name: 'test'}, {inputType: 'image', name: "image", multiple: true}],
+            })}>Option
+                Dialog
+            </div>
+            <div className={'example-button'} style={buttonStyles} onClick={() => showInputDialog({
+                title: 'Sign Up',
+                showCloseButton: true,
+                headerTextStyle: {fontWeight: "bold", fontSize: "x-large"},
+                headerStyle: {marginTop:5, marginBottom: 5},
+                inputs: [
+                    {inputType: 'text', name: 'fname', label: 'First Name'},
+                    {inputType: 'text', name: 'lname', label: 'Last Name'},
+                    {
+                        inputType: 'image',
+                        name: 'avatar',
+                        label: 'Avatar',
+                        multiple: true
+                    }, {
+                        inputType: 'date',
+                        name: 'dob',
+                        label: 'Date of Birth'
+                    }],
                 onConfirm: (response) => {
                     showAlert({title: 'Result', text: JSON.stringify(response)});
                 }
-            })}>Show Input Dialog
-            </button>
+            })}>
+                Input Dialog With Multiple Input Fields
+            </div>
 
-            <button style={buttonStyles} onClick={() => showInputDialog({
+            <div className={'example-button'} style={buttonStyles} onClick={() => showInputDialog({
+                title: 'Title',
+                inputs: [{inputType: 'text', name: 'test'}],
+                onConfirm: (response) => {
+                    showAlert({title: 'Result', text: JSON.stringify(response)});
+                }
+            })}>Input Dialog With Text Field
+            </div>
+
+            <div className={'example-button'} style={buttonStyles} onClick={() => showInputDialog({
                 title: 'Title',
                 inputs: [{inputType: 'date', name: 'test'}],
                 onConfirm: (response) => {
                     showAlert({title: 'Result', text: JSON.stringify(response)});
                 }
-            })}>Show Input Dialog
-            </button>
+            })}>Input Dialog With Date
+            </div>
 
-            <button style={buttonStyles} onClick={callMe}>Show Toast Outside of Component
-            </button>
+            <h2>Toast</h2>
+
+            <div className={'example-button'} style={buttonStyles} onClick={callMe}>Toast Outside of Component
+            </div>
+            <div className={'example-button'} style={buttonStyles} onClick={() => showToast({
+                text: 'Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum',
+                type: DialogType.INFO,
+                timeoutDuration: 5000
+            })}>Toast
+            </div>
+
+            <div className={'example-button'} style={buttonStyles} onClick={() => showToast({
+                customComponent: <TestComponent a={'test'}/>,
+                type: DialogType.INFO,
+                timeoutDuration: 5000,
+            })}>Custom Content Toast
+            </div>
         </>
     )
-}
+};
 
 const App = () => {
-    return (
+return (
         <MyComponent/>
-    )
-}
+            )
+            }
 
-export const Setup = () => {
-    return (
-        <PopupProvider>
+            export const Setup = () => {
+            return (
+            <PopupProvider>
             <App/>
-        </PopupProvider>
-    )
-}
+            </PopupProvider>
+            )
+        }
 

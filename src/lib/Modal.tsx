@@ -20,11 +20,11 @@ export default function Modal({hideModal, Component, ComponentJSX, componentProp
     useEffect(() => {
         if (ModalToRender && !(Component || ComponentJSX)) {
             hideMe();
-        } else if ((Component || ComponentJSX) && !ModalToRender) {
+        } else if (Component || ComponentJSX) {
             showMe();
         }
         return () => clearTimeout(timeout);
-    }, [Component, ComponentJSX])
+    }, [Component, ComponentJSX, componentProps])
 
     useEffect(() => {
 

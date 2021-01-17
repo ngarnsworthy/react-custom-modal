@@ -172,3 +172,27 @@
   -webkit-box-sizing: border-box;
 }
 
+.select-image:hover {
+  background: #e3e3e3;
+}
+
+.react-custom-input-img-container {
+  padding: 5px;
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  border-radius: 5px;
+  background: #d0d0d0;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid lightblue;
+}
+

@@ -71,20 +71,16 @@ const Dialog = (props: DialogProps) => {
                     name: cancelText,
                     onClick: () => {
                         hideModal();
-                        setTimeout(() => {
-                            if (onCancel) onCancel();
-                            if (onDismissed && isInput) onDismissed(inputValues);
-                        })
+                        if (onCancel) onCancel();
+                        if (onDismissed && isInput) onDismissed(inputValues);
                     },
                 },
                 {
                     name: confirmText,
                     onClick: () => {
                         hideModal();
-                        setTimeout(() => {
-                            if (onConfirm) onConfirm(inputValues);
-                            if (onDismissed && isInput) onDismissed(inputValues);
-                        })
+                        if (onConfirm) onConfirm(inputValues);
+                        if (onDismissed && isInput) onDismissed(inputValues);
                     },
                 },
             ];
