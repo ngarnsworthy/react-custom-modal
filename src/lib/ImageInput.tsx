@@ -43,9 +43,9 @@ export default function ImageInput({setInputValues, inputValues, item}: IProps) 
     return (
         <>
             <div style={{textAlign: "left"}}>
-                <label style={{display: "block", marginBottom:5}}>{item.label || ''}</label>
+                <label style={{display: "block", marginBottom: 5}}>{item.label || ''}</label>
                 <div
-                    style={{cursor:'pointer'}}
+                    style={{cursor: 'pointer'}}
                     className={'react-custom-input-item select-image'}
                     onClick={() => {
                         if (inputRef.current) inputRef.current.click();
@@ -81,21 +81,23 @@ export default function ImageInput({setInputValues, inputValues, item}: IProps) 
                     >
                         <img alt="" style={{maxHeight: 100}} src={image.src}/>
                         <div
-                            onClick={() =>
+                            onClick={() => {
                                 setInputValues({
                                     ...inputValues,
                                     // @ts-ignore
-                                    images: [
-                                        ...inputValues[item.name].slice(0, index),
-                                        ...inputValues[item.name].slice(index + 1),
-                                    ],
+                                    [item.name]:
+                                        [...inputValues[item.name].slice(0, index),
+                                            ...inputValues[item.name].slice(index + 1)]
                                 })
+                            }
                             }
                             style={{
                                 borderRadius: 5,
                                 position: "absolute",
                                 top: 5,
                                 right: 5,
+                                zIndex: 500,
+                                cursor: 'pointer'
                             }}
                         >
                             {closeIcon('white')}

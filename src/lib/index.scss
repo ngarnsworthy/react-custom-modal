@@ -191,8 +191,8 @@
   background: #d0d0d0;
 }
 
-input:focus {
-  outline: none;
-  border: 1px solid lightblue;
+.react-custom-input-item:focus {
+    outline: none;
+    border: 1px solid lightblue;
 }
 

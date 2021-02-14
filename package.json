@@ -1,6 +1,6 @@
 {
   "name": "react-custom-popup",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "homepage": "https://Rafaa17.github.io/react-custom-modal",
   "description": "React Popup Library build using React Context API",
   "main": "build/index.js",
@@ -23,7 +23,7 @@
     "build-demo": "rm -rf build build-demo && react-scripts build && mv build build-demo",
     "deploy-demo": "gh-pages -d build-demo",
     "build": "rm -rf build && rollup -c",
-    "start": "react-scripts start"
+    "start": "PORT=3003 react-scripts start"
   },
   "author": "",
   "license": "ISC",
