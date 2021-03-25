@@ -62,7 +62,7 @@ interface OptionDialogOptions {
 }
 
 export interface InputProps {
-    default?: string;
+    default?: string | Date | number;
     inputType: 'text' | 'file' | 'number' | 'textarea' | 'date' | 'image';
     label?: string;
     /*
@@ -77,10 +77,6 @@ export interface ImageInputProps extends InputProps{
     multiple?: boolean;
 }
 
-export interface DynamicObject {
-    [key: string]: Object;
-}
-
 interface InputDialogOptions {
     animationType?: AnimationType;
     outAnimationType?: OutAnimationType;
@@ -93,7 +89,7 @@ interface InputDialogOptions {
     input?: InputProps | ImageInputProps;
     inputs?: Array<InputProps | ImageInputProps>;
     onCancel?: () => void;
-    onConfirm?: (result?: DynamicObject) => void;
+    onConfirm?: (result: { [key: string]: any }) => void;
     onDismissed?: () => void;
     options?: Array<OptionDialogButton>;
     showCloseButton?: boolean;

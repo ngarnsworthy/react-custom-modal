@@ -1,10 +1,17 @@
 import React, {useState} from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import {DialogType, DynamicObject, InputProps, OptionDialogButton} from "./index";
+import {DialogType, InputProps, OptionDialogButton} from "./index";
 import Header from "./Header";
 import Footer from "./Footer";
 import Input from "./Input";
 import ImageInput from "./ImageInput";
+
+// @ts-ignore
+Date.prototype.toDateInputValue = function () {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0, 10);
+};
 
 interface DialogProps {
     title: string,
@@ -12,16 +19,16 @@ interface DialogProps {
     type: DialogType,
     hideModal: () => {},
     optionButtons: Array<OptionDialogButton>,
-    onConfirm: (result?: DynamicObject) => {},
-    onCancel: (result?: DynamicObject) => {},
+    onConfirm: (result?: { [key: string]: any }) => {},
+    onCancel: (result?: { [key: string]: any }) => {},
     isAlert: boolean,
     isInput: boolean,
     confirmText: string,
     cancelText: string,
     showCloseButton: boolean,
-    inputs: Array<any>,
-    onDismissed: (result?: DynamicObject) => {},
-    onOpened: (result?: DynamicObject) => {},
+    inputs: Array<InputProps>,
+    onDismissed: (result?: { [key: string]: any }) => {},
+    onOpened: (result?: { [key: string]: any }) => {},
     input: InputProps,
     headerTextStyle?: React.CSSProperties;
     textStyle?: React.CSSProperties;
@@ -57,9 +64,36 @@ const Dialog = (props: DialogProps) => {
         bodyComponent
     } = props;
 
-    const [inputValues, setInputValues] = useState<{ [key: string]: any }>(
-        input && input["default"] ? {[input.name]: input["default"]} : {}
-    );
+    const getDefaultValues = () => {
+
+        let defaultVals = {};
+
+        if (input && !inputs && input.default) {
+            if (input.inputType === 'date') {
+                // @ts-ignore
+                defaultVals[input.name] = (input.default as Date).toDateInputValue();
+            } else {
+                defaultVals[input.name] = input.default;
+            }
+        }
+        if (inputs && !input) {
+
+            inputs.forEach(i => {
+                if (i.default) {
+                    if (i.inputType === 'date') {
+                        // @ts-ignore
+                        defaultVals[i.name] = (i.default as Date).toDateInputValue();
+                    } else {
+                        defaultVals[i.name] = i.default;
+                    }
+                }
+            })
+        }
+
+        return defaultVals;
+    }
+
+    const [inputValues, setInputValues] = useState<{ [key: string]: any }>(() => getDefaultValues());
 
     let optionsToRender = [];
 

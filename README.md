@@ -144,7 +144,7 @@ interface InputDialogOptions {
     input?: InputProps;
     inputs?: Array<InputProps>;
     onCancel?: () => void;
-    onConfirm?: (result?: DynamicObject) => void;
+    onConfirm?: (result?: { [key: string]: any }) => void;
     onDismissed?: () => void;
     options?: Array<OptionDialogButton>;
     showCloseButton?: boolean;

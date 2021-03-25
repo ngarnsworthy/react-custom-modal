@@ -98,7 +98,7 @@ const MyComponent = () => {
                 headerTextStyle: {fontWeight: "bold", fontSize: "x-large"},
                 headerStyle: {marginTop:5, marginBottom: 5},
                 inputs: [
-                    {inputType: 'text', name: 'fname', label: 'First Name'},
+                    {inputType: 'text', name: 'fname', label: 'First Name', default: 'John Doe'},
                     {inputType: 'text', name: 'lname', label: 'Last Name'},
                     {
                         inputType: 'image',
@@ -108,7 +108,8 @@ const MyComponent = () => {
                     }, {
                         inputType: 'date',
                         name: 'dob',
-                        label: 'Date of Birth'
+                        label: 'Date of Birth',
+                        default: new Date()
                     }],
                 onConfirm: (response) => {
                     showAlert({title: 'Result', text: JSON.stringify(response)});
