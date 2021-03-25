@@ -136,6 +136,15 @@ const MyComponent = () => {
             })}>Input Dialog With Date
             </div>
 
+            <div className={'example-button'} style={buttonStyles} onClick={() => showInputDialog({
+                title: 'Title',
+                input: {inputType: 'image', name: 'myimage'},
+                onConfirm: (response) => {
+                    showAlert({title: 'Result', text: JSON.stringify(response)});
+                }
+            })}>Input Dialog With Date
+            </div>
+
             <h2>Toast</h2>
 
             <div className={'example-button'} style={buttonStyles} onClick={callMe}>Toast Outside of Component
