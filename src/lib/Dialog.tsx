@@ -5,6 +5,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Input from "./Input";
 import ImageInput from "./ImageInput";
+import {InputValidation, ValidationResult} from "./Validation";
 
 // @ts-ignore
 Date.prototype.toDateInputValue = function () {
@@ -37,6 +38,7 @@ interface DialogProps {
     footerStyle?: React.CSSProperties;
     bodyComponent?: JSX.Element;
 }
+
 
 const Dialog = (props: DialogProps) => {
 
@@ -93,7 +95,94 @@ const Dialog = (props: DialogProps) => {
         return defaultVals;
     }
 
+
     const [inputValues, setInputValues] = useState<{ [key: string]: any }>(() => getDefaultValues());
+    const [errorValues, setErrorValues] = useState<{ [key: string]: string }>({});
+
+    const validateInputValue = (input: InputProps) :{[key:string]:string} | null => {
+
+        let result: ValidationResult;
+
+        switch (input.inputType) {
+            case "text":
+                result = InputValidation.validateText(input, inputValues[input.name]);
+                break;
+            case "number":
+                result = InputValidation.validateNumber(input, inputValues[input.name]);
+                break;
+            case "date":
+                result = InputValidation.validateDate(input, inputValues[input.name]);
+                break;
+            case "file":
+                result = InputValidation.validateFile(input, inputValues[input.name]);
+                break;
+            case "image":
+                result = InputValidation.validateFile(input, inputValues[input.name]);
+                break;
+            default:
+                result = {
+                    success: true,
+                    message: ''
+                }
+        }
+
+        if (!result.success) {
+            return  {[input.name]: result.message!};
+        }
+
+        return null;
+
+    }
+
+    const validateInputs = () :{[key:string]:string} => {
+
+        setErrorValues({});
+
+        const allInputsToValidate = [];
+
+        if (input && input.validation) {
+            allInputsToValidate.push(input);
+        }
+
+        if (inputs) {
+            for (const i of inputs) {
+                if (i.validation) {
+                    allInputsToValidate.push(i);
+                }
+            }
+        }
+
+        let errorsMapping = {};
+
+        allInputsToValidate.forEach((input)=>{
+            const res = validateInputValue(input);
+            if (res !== null) {
+                errorsMapping = {
+                    ...errorsMapping,
+                    ...res
+                }
+            }
+        });
+
+        return errorsMapping;
+
+    }
+
+    const confirmHandle = () => {
+
+        const errors = validateInputs();
+
+        if (Object.keys(errors).length === 0){
+            hideModal();
+            if (onConfirm) {
+                onConfirm(inputValues);
+            };
+            if (onDismissed && isInput) onDismissed(inputValues);
+        } else {
+            setErrorValues(errors);
+        }
+
+    }
 
     let optionsToRender = [];
 
@@ -111,11 +200,7 @@ const Dialog = (props: DialogProps) => {
                 },
                 {
                     name: confirmText,
-                    onClick: () => {
-                        hideModal();
-                        if (onConfirm) onConfirm(inputValues);
-                        if (onDismissed && isInput) onDismissed(inputValues);
-                    },
+                    onClick: confirmHandle,
                 },
             ];
     else
@@ -150,9 +235,9 @@ const Dialog = (props: DialogProps) => {
                                 {inputsToRender.map((item, index) =>
                                     <div key={`input${index}`} className={'react-custom-input-container'}>
                                         {item.inputType !== 'image' ? (
-                                                <Input item={item} setInputValues={setInputValues}
+                                                <Input error={errorValues[item.name]} item={item} setInputValues={setInputValues}
                                                        inputValues={inputValues}/>) :
-                                            <ImageInput item={item} setInputValues={setInputValues}
+                                            <ImageInput error={errorValues[item.name]} item={item} setInputValues={setInputValues}
                                                         inputValues={inputValues}/>}
                                     </div>
                                 )}

@@ -6,9 +6,10 @@ interface IProps {
     setInputValues: Dispatch<SetStateAction<{ [key: string]: any }>>;
     inputValues: { [key: string]: any };
     item: InputProps;
+    error?: string;
 }
 
-export default function ImageInput({setInputValues, inputValues, item}: IProps) {
+export default function ImageInput({setInputValues, inputValues, item, error}: IProps) {
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -105,6 +106,11 @@ export default function ImageInput({setInputValues, inputValues, item}: IProps) 
                     </div>
                 ))}
             </div>
+            {error &&
+            <label style={{display: 'block'}} className={'react-custom-input-error-item'}>
+                {error}
+            </label>
+            }
         </>
     )
 
