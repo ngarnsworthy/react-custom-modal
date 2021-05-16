@@ -7,36 +7,37 @@ function callMe() {
 	PopupActions.showToast({text: 'test', type: DialogType.DANGER});
 }
 
+const buttonStyles: React.CSSProperties = {
+	display: 'block',
+	marginTop: 5
+}
+
+const TestComponent = (props: { a: string }) => {
+
+	return (
+		<div style={{background: 'white', borderRadius: 5, width: 500, padding: 20}}>
+			<h4> Fantasy T-shirt</h4>
+			<label className={"text-muted"}>Shirts</label>
+			<h3 className={"mt-3"} style={{fontWeight: 600, fontSize: "20px"}}>
+				$39.99
+			</h3>
+			<p className={"mt-3"}>
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam,
+				sapiente illo. Sit error voluptas repellat rerum quidem, soluta enim
+				perferendis voluptates laboriosam. Distinctio, officia quis dolore
+				quos sapiente tempore alias.
+			</p>
+			Received
+			Props: {JSON.stringify(props)}
+		</div>
+	)
+
+}
+
 const MyComponent = () => {
 
-	const TestComponent = (props: { a: string }) => {
 
-		return (
-			<div style={{background: 'white', borderRadius: 5, width: 500, padding: 20}}>
-				<h4> Fantasy T-shirt</h4>
-				<label className={"text-muted"}>Shirts</label>
-				<h3 className={"mt-3"} style={{fontWeight: 600, fontSize: "20px"}}>
-					$39.99
-				</h3>
-				<p className={"mt-3"}>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam,
-					sapiente illo. Sit error voluptas repellat rerum quidem, soluta enim
-					perferendis voluptates laboriosam. Distinctio, officia quis dolore
-					quos sapiente tempore alias.
-				</p>
-				Received
-				Props: {JSON.stringify(props)}
-			</div>
-		)
-
-	}
-
-	const {showAlert, showOptionDialog, showInputDialog, showModal, showToast} = usePopup();
-
-	const buttonStyles: React.CSSProperties = {
-		display: 'block',
-		marginTop: 5
-	}
+	const {showModal, showToast} = usePopup();
 
 	return (
 		<>
@@ -48,6 +49,41 @@ const MyComponent = () => {
 			     })}>Modal
 			</div>
 
+			<AlertConfigurator/>
+
+			<h2>Toast</h2>
+
+			<div className={'example-button'} style={buttonStyles} onClick={callMe}>Toast Outside of Component
+			</div>
+			<div className={'example-button'} style={buttonStyles} onClick={() => showToast({
+				text: 'Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum',
+				type: DialogType.INFO,
+				timeoutDuration: 5000
+			})}>Toast
+			</div>
+
+			<div className={'example-button'} style={buttonStyles} onClick={() => showToast({
+				customComponent: <TestComponent a={'test'}/>,
+				type: DialogType.INFO,
+				timeoutDuration: 5000,
+			})}>Custom Content Toast
+			</div>
+		</>
+	)
+};
+
+const App = () => {
+	return (
+		<MyComponent/>
+	)
+}
+
+const AlertConfigurator = () => {
+
+	const {showAlert, showOptionDialog, showInputDialog} = usePopup();
+
+	return (
+		<>
 			<h2>Alert</h2>
 			<div className={'example-button'} style={buttonStyles} onClick={() => showAlert({
 				type: DialogType.DANGER,
@@ -97,6 +133,19 @@ const MyComponent = () => {
 				showCloseButton: true,
 				headerTextStyle: {fontWeight: "bold", fontSize: "x-large"},
 				headerStyle: {marginTop: 5, marginBottom: 5},
+				errorMessageStyle: {color: 'green'},
+				options: [{
+					name: 'No Thanks!',
+					type: 'cancel',
+					style: {background: 'lightcoral'}
+				}, {
+					name: 'Cancel',
+					type: 'cancel',
+				}, {
+					name: 'Confirm',
+					type: 'confirm',
+					style: {background: 'lightgreen'}
+				}],
 				inputs: [
 					{
 						inputType: 'text', name: 'fname', label: 'First Name', default: 'John Doe', validation: {
@@ -163,31 +212,7 @@ const MyComponent = () => {
 				}
 			})}>Input Dialog With Date
 			</div>
-
-			<h2>Toast</h2>
-
-			<div className={'example-button'} style={buttonStyles} onClick={callMe}>Toast Outside of Component
-			</div>
-			<div className={'example-button'} style={buttonStyles} onClick={() => showToast({
-				text: 'Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum',
-				type: DialogType.INFO,
-				timeoutDuration: 5000
-			})}>Toast
-			</div>
-
-			<div className={'example-button'} style={buttonStyles} onClick={() => showToast({
-				customComponent: <TestComponent a={'test'}/>,
-				type: DialogType.INFO,
-				timeoutDuration: 5000,
-			})}>Custom Content Toast
-			</div>
 		</>
-	)
-};
-
-const App = () => {
-	return (
-		<MyComponent/>
 	)
 }
 

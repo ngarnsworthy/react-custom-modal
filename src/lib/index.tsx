@@ -36,10 +36,10 @@ export enum DialogType {
 
 export interface OptionDialogButton {
     name: string;
-    onClick: () => void;
-    color?: string;
+    onClick?: () => void;
+    style?: React.CSSProperties;
+    type?: 'confirm' | 'cancel'
 }
-
 
 export declare type Message = string;
 export declare type ValidationValue = boolean | number | string | Date | RegExp;
@@ -109,6 +109,7 @@ interface InputDialogOptions {
     footerStyle?: React.CSSProperties;
     headerStyle?: React.CSSProperties;
     headerTextStyle?: React.CSSProperties;
+    errorMessageStyle?: React.CSSProperties;
     input?: InputProps | ImageInputProps;
     inputs?: Array<InputProps | ImageInputProps>;
     onCancel?: () => void;

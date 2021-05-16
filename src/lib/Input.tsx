@@ -3,19 +3,17 @@ import {InputProps} from "./index";
 
 interface IProps {
 	item: InputProps;
-
 	setInputValues: Dispatch<SetStateAction<{ [key: string]: any }>>;
-
 	inputValues: {};
-
-	error?: string
+	error?: string;
+	errorMessageStyle?: React.CSSProperties;
 }
 
-export default function Input({item, setInputValues, inputValues, error}: IProps) {
+export default function Input({item, setInputValues, inputValues, error, errorMessageStyle}: IProps) {
 
 	return (
 		<div style={{textAlign: "left"}}>
-			<label style={{display: 'block'}} className={'react-custom-input-label-item'} >
+			<label style={{display: 'block'}} className={'react-custom-input-label-item'}>
 				{item.label}
 			</label>
 			{item.inputType && item.inputType !== "textarea" ? (
@@ -56,9 +54,9 @@ export default function Input({item, setInputValues, inputValues, error}: IProps
 				/>
 			) : null}
 			{error &&
-	            <label style={{display: 'block'}} className={'react-custom-input-error-item'}>
-					{error}
-	            </label>
+            <label className={'react-custom-input-error-item'} style={errorMessageStyle ?? undefined}>
+				{error}
+            </label>
 			}
 		</div>
 	)

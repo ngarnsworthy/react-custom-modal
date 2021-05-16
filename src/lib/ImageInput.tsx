@@ -7,9 +7,10 @@ interface IProps {
     inputValues: { [key: string]: any };
     item: InputProps;
     error?: string;
+    errorMessageStyle?: React.CSSProperties;
 }
 
-export default function ImageInput({setInputValues, inputValues, item, error}: IProps) {
+export default function ImageInput({setInputValues, inputValues, item, error, errorMessageStyle}: IProps) {
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -107,7 +108,7 @@ export default function ImageInput({setInputValues, inputValues, item, error}: I
                 ))}
             </div>
             {error &&
-            <label style={{display: 'block'}} className={'react-custom-input-error-item'}>
+            <label className={'react-custom-input-error-item'} style={errorMessageStyle ?? undefined}>
                 {error}
             </label>
             }
