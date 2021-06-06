@@ -73,7 +73,7 @@ interface OptionDialogOptions {
     headerTextStyle?: React.CSSProperties;
     onCancel?: () => void;
     onConfirm?: () => void;
-    optionButtons?: Array<OptionDialogButton>;
+    options?: Array<OptionDialogButton>;
     showCloseButton?: boolean;
     text?: string;
     textStyle?: React.CSSProperties;

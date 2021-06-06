@@ -125,6 +125,18 @@ const AlertConfigurator = () => {
 			<div className={'example-button'} style={buttonStyles} onClick={() => showOptionDialog({
 				text: 'Text',
 				title: 'Title',
+				options: [{
+					name: 'No Thanks!',
+					type: 'cancel',
+					style: {background: 'lightcoral'}
+				}, {
+					name: 'Cancel',
+					type: 'cancel',
+				}, {
+					name: 'Confirm',
+					type: 'confirm',
+					style: {background: 'lightgreen'}
+				}],
 			})}>Option
 				Dialog
 			</div>
