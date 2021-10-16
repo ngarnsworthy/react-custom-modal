@@ -1,118 +1,148 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {AnimationType, IToast, ToastOptions} from "./index";
 import {closeIcon, iconIllustrationTypes} from "./SvgIcons";
+import ToastProgress from "./ToastProgress";
 
 interface IToasts {
-    toasts?: Array<IToast>;
-    hideToast: (toastId: string) => void;
+	toasts?: Array<IToast>;
+	hideToast: (toastId: string) => void;
 }
 
 export enum ToastPosition {
-    TOP_RIGHT = 'top-right',
-    BOTTOM_RIGHT = 'bottom-right',
-    BOTTOM_CENTER = 'bottom-center'
+	TOP_RIGHT = 'top-right',
+	TOP_LEFT = 'top-left',
+	TOP_CENTER = 'top-center',
+	BOTTOM_RIGHT = 'bottom-right',
+	BOTTOM_CENTER = 'bottom-center',
+	BOTTOM_LEFT = 'bottom-left',
 }
 
-let DefaultToastPosition = ToastPosition.BOTTOM_RIGHT;
-
-export const setToastPosition = (position: ToastPosition) => {
-    DefaultToastPosition = position;
-}
+export const DefaultToastPosition = ToastPosition.BOTTOM_RIGHT;
 
 export default function Toast({toasts, hideToast}: IToasts) {
 
-    return (
-        <div className={`react-custom-toast-container react-custom-toast-${DefaultToastPosition}`}>
-            {toasts && toasts.map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
-        </div>
-    )
+	return (
+		<>
+			<div className={`react-custom-toast-container react-custom-toast-${ToastPosition.BOTTOM_LEFT}`}>
+				{toasts && toasts.filter(t => t.position === ToastPosition.BOTTOM_LEFT).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+			</div>
+			<div className={`react-custom-toast-container react-custom-toast-${ToastPosition.BOTTOM_CENTER}`}>
+				{toasts && toasts.filter(t => t.position === ToastPosition.BOTTOM_CENTER).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+			</div>
+			<div className={`react-custom-toast-container react-custom-toast-${ToastPosition.BOTTOM_RIGHT}`}>
+				{toasts && toasts.filter(t => t.position === ToastPosition.BOTTOM_RIGHT).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+			</div>
+			<div className={`react-custom-toast-container react-custom-toast-${ToastPosition.TOP_LEFT}`}>
+				{toasts && toasts.filter(t => t.position === ToastPosition.TOP_LEFT).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+			</div>
+			<div className={`react-custom-toast-container react-custom-toast-${ToastPosition.TOP_RIGHT}`}>
+				{toasts && toasts.filter(t => t.position === ToastPosition.TOP_RIGHT).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+			</div>
+			<div className={`react-custom-toast-container react-custom-toast-${ToastPosition.TOP_CENTER}`}>
+				{toasts && toasts.filter(t => t.position === ToastPosition.TOP_CENTER).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+			</div>
+		</>
+	)
 
 }
 
 interface IProps {
-    toast: IToast,
-    animationType?: AnimationType;
-    hideToast: (toastId: string) => void;
+	toast: IToast,
+	animationType?: AnimationType;
+	hideToast: (toastId: string) => void;
 }
 
 function ToastItem({toast, hideToast}: IProps) {
 
-    const [toastData, setToast] = useState<ToastOptions | null>(null);
+	const [toastData, setToast] = useState<ToastOptions | null>(null);
 
-    const [animation, setAnimation] = useState<{ in: string, out: string }>({in: '', out: ''});
+	const [animation, setAnimation] = useState<{ in: string, out: string }>({in: '', out: ''});
 
-    let timeout: NodeJS.Timeout;
+	let timeout = useRef<NodeJS.Timeout | undefined>();
 
-    useEffect(() => {
-        if (toastData && !toast) {
-            hideMe();
-        } else if (toast && !toastData) {
-            showMe();
-            if (toast.timeoutDuration) {
-                timeout = setTimeout(hideMe, toast.timeoutDuration)
-            }
+	const hideMe = useCallback(() => {
+		console.log('trying to hide')
+		const outAnimation = {
+			[ToastPosition.TOP_RIGHT]: 'slideOutRight',
+			[ToastPosition.TOP_CENTER]: 'slideOutUp',
+			[ToastPosition.TOP_LEFT]: 'slideOutLeft',
+			[ToastPosition.BOTTOM_RIGHT]: 'slideOutRight',
+			[ToastPosition.BOTTOM_LEFT]: 'slideOutLeft',
+			[ToastPosition.BOTTOM_CENTER]: 'slideOutDown',
+		}
+		setAnimation({out: `animate__animated animate__${outAnimation[toast.position!]} animate__faster`, in: ''})
+	}, [toast.position]);
 
-        }
-        return () => clearTimeout(timeout);
-    }, [toast])
+	const showMe = useCallback(() => {
+		const inAnimation = {
+			[ToastPosition.TOP_RIGHT]: 'slideInRight',
+			[ToastPosition.TOP_CENTER]: 'slideInDown',
+			[ToastPosition.TOP_LEFT]: 'slideInLeft',
+			[ToastPosition.BOTTOM_RIGHT]: 'slideInRight',
+			[ToastPosition.BOTTOM_LEFT]: 'slideInLeft',
+			[ToastPosition.BOTTOM_CENTER]: 'slideInUp',
+		}
+		setAnimation({in: `animate__animated animate__${inAnimation[toast.position!]} animate__faster`, out: ''})
+	}, [toast.position]);
 
-    useEffect(() => {
+	useEffect(() => {
+		if (toastData && !toast) {
+			hideMe();
+		} else if (toast && !toastData) {
+			showMe();
+			if (toast.timeoutDuration) {
+				timeout.current = setTimeout(hideMe, toast.timeoutDuration)
+			}
+		}
 
-        if (animation.in && toast) {
-            setToast(toast);
-        }
+		return () => {
+			timeout.current && clearTimeout(timeout.current)
+		};
+	}, [toast])
 
-        if (animation.out) {
-            timeout = setTimeout(() => {
-                setToast(null);
-                hideToast(toast.id);
-            }, 500);
-        }
+	useEffect(() => {
+		if (animation.in && toast) {
+			setToast(toast);
+		}
 
-    }, [animation])
+		if (animation.out) {
+			if (timeout.current) {
+				clearTimeout(timeout.current);
+			}
+			timeout.current = setTimeout(() => {
+				setToast(null);
+				hideToast(toast.id);
+			}, 250);
+		}
+	}, [animation])
 
-    const hideMe = useCallback(() => {
-        if (DefaultToastPosition === ToastPosition.BOTTOM_CENTER) {
-            setAnimation({out: 'animate__animated animate__slideOutDown animate__faster', in: ''})
-        } else {
-            setAnimation({out: 'animate__animated animate__slideOutRight animate__faster', in: ''})
-        }
-    }, []);
+	if (!toastData)
+		return null;
 
-    const showMe = useCallback(() => {
-        if (DefaultToastPosition === ToastPosition.BOTTOM_CENTER) {
-            setAnimation({in: 'animate__animated animate__slideInUp animate__faster', out: ''})
-        } else {
-            setAnimation({in: 'animate__animated animate__slideInRight animate__faster', out: ''})
-        }
-    }, []);
-
-    if (!toastData)
-        return null;
-
-    return (
-        <div className={`react-custom-toast-${toastData.type} react-custom-toast ${animation.in} ${animation.out}`}
-             style={{...toast.containerStyle}}>
-            <div style={{
-                width: '90%',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center'
-            }}>
-                {toast.customComponent || (
-                    <>
-                        <div>
-                            {iconIllustrationTypes[toastData.type]}
-                        </div>
-                        <div className={'react-custom-toast-text'} style={{...toast.textStyle}}>
-                            {toastData.text}
-                        </div>
-                    </>
-                )}
-            </div>
-            <div style={{width: "10%", cursor: 'pointer'}}
-                 onClick={hideMe}>{closeIcon()}</div>
-        </div>
-    )
+	return (
+		<div className={`react-custom-toast-${toastData.type} react-custom-toast ${animation.in} ${animation.out}`}
+		     style={{...toast.containerStyle}}>
+			<div style={{
+				width: '90%',
+				display: 'flex',
+				flexDirection: 'row',
+				alignItems: 'center'
+			}}>
+				{toast.customComponent || (
+					<>
+						<div>
+							{iconIllustrationTypes[toastData.type]}
+						</div>
+						<div className={'react-custom-toast-text'} style={{...toast.textStyle}}>
+							{toastData.text}
+						</div>
+					</>
+				)}
+			</div>
+			<div style={{width: "10%", cursor: 'pointer'}}
+			     onClick={hideMe}>{closeIcon()}</div>
+			{toast.timeoutDuration && toast.showProgress && toastData && <ToastProgress color={toast.progressColor} timeout={toast.timeoutDuration}/>}
+		</div>
+	)
 
 }

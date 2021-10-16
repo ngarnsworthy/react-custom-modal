@@ -169,13 +169,27 @@ interface InputProps {
 
 ```typescript
 interface ToastOptions {
-    containerStyle?: React.CSSProperties;
-    customComponent?: JSX.Element;
-    position?: ToastPosition;
-    text: string;
-    textStyle?: React.CSSProperties,
-    timeoutDuration?: number;
-    type: DialogType;
+	containerStyle?: React.CSSProperties;
+	customComponent?: JSX.Element;
+	position?: ToastPosition;
+	text?: string;
+	textStyle?: React.CSSProperties,
+	timeoutDuration?: number;
+	type: DialogType;
+	showCloseButton?: boolean;
+	showProgress?: boolean;
+	progressColor?: string;
+}
+```
+
+```typescript
+export enum ToastPosition {
+    TOP_RIGHT = 'top-right',
+    TOP_LEFT = 'top-left',
+    TOP_CENTER = 'top-center',
+    BOTTOM_RIGHT = 'bottom-right',
+    BOTTOM_CENTER = 'bottom-center',
+    BOTTOM_LEFT = 'bottom-left',
 }
 ```
 

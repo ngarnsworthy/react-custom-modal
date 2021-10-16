@@ -1,11 +1,8 @@
 import React from 'react';
-import {AnimationType, DialogType, OutAnimationType, PopupActions, PopupProvider, usePopup} from './lib'
+import {AnimationType, DialogType, OutAnimationType, PopupProvider, usePopup} from './lib'
 
 import './TestApp.css'
-
-function callMe() {
-	PopupActions.showToast({text: 'test', type: DialogType.DANGER});
-}
+import {ToastPosition} from "./lib/Toast";
 
 const buttonStyles: React.CSSProperties = {
 	display: 'block',
@@ -36,7 +33,6 @@ const TestComponent = (props: { a: string }) => {
 
 const MyComponent = () => {
 
-
 	const {showModal, showToast} = usePopup();
 
 	return (
@@ -53,21 +49,59 @@ const MyComponent = () => {
 
 			<h2>Toast</h2>
 
-			<div className={'example-button'} style={buttonStyles} onClick={callMe}>Toast Outside of Component
-			</div>
 			<div className={'example-button'} style={buttonStyles} onClick={() => showToast({
 				text: 'Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum',
 				type: DialogType.INFO,
-				timeoutDuration: 5000
-			})}>Toast
+				position: ToastPosition.BOTTOM_RIGHT
+				// timeoutDuration: 5000
+			})}>Toast Bottom Right
 			</div>
 
 			<div className={'example-button'} style={buttonStyles} onClick={() => showToast({
-				customComponent: <TestComponent a={'test'}/>,
+				text: 'Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum',
 				type: DialogType.INFO,
-				timeoutDuration: 5000,
-			})}>Custom Content Toast
+				position: ToastPosition.BOTTOM_CENTER
+				// timeoutDuration: 5000
+			})}>Toast Bottom Center
 			</div>
+
+			<div className={'example-button'} style={buttonStyles} onClick={() => showToast({
+				text: 'Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum',
+				type: DialogType.INFO,
+				position: ToastPosition.BOTTOM_LEFT
+				// timeoutDuration: 5000
+			})}>Toast Bottom Left
+			</div>
+
+			<div className={'example-button'} style={buttonStyles} onClick={() => showToast({
+				text: 'Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum',
+				type: DialogType.INFO,
+				position: ToastPosition.TOP_RIGHT
+				// timeoutDuration: 5000
+			})}>Toast Top Right
+			</div>
+
+			<div className={'example-button'} style={buttonStyles} onClick={() => showToast({
+				text: 'Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum',
+				type: DialogType.INFO,
+				position: ToastPosition.TOP_LEFT,
+				timeoutDuration: 5000,
+				showProgress: true
+			})}>Toast Top Left
+			</div>
+
+
+			<div className={'example-button'} style={buttonStyles} onClick={() => showToast({
+				text: 'Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum Lorem Lipsum',
+				type: DialogType.INFO,
+				position: ToastPosition.TOP_CENTER,
+				timeoutDuration: 10000,
+				showProgress: true,
+				progressColor: 'white',
+				containerStyle: {background: 'darkgray'}
+			})}>Toast Top Center
+			</div>
+
 		</>
 	)
 };
