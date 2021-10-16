@@ -2,7 +2,9 @@
 
 react-custom-popup is a fully customizable React library for dealing with popups such as input-dialogs, modals, alerts, toasts.
 
-[LIVE DEMO](https://stackblitz.com/edit/react-ts-tdf5kx?file=index.tsx)
+[Demo](https://stackblitz.com/edit/react-ts-tdf5kx?file=index.tsx)
+
+[Changelog](https://github.com/Rafaa17/react-custom-modal/blob/master/CHANGELOG.md)
 
 ![DEMO GIF](https://drive.google.com/uc?export=view&id=1iH2sbIVo3_tPWBQiCH6bbdMrs8i1UUO0 "Title")
 
