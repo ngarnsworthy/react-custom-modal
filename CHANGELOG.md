@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Released]
 
+## [1.1.1] - 2021-10-17
+### Fixed
+- Issue with z-index of toasts container
+
 ## [1.1.0] - 2021-10-17
 ### Added
 - Toast Multiple Positioning (Top Center, Top Left, Top Right, Bottom Center, Bottom Left, Bottom Right)
