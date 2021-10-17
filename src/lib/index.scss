@@ -90,6 +90,7 @@
 
 .react-custom-toast-container {
   position: fixed;
+  z-index: 9999;
 }
 
 .react-custom-toast-progress {
