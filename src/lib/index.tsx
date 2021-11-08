@@ -59,7 +59,7 @@ export declare type ValidationOptions = Partial<{
 	maxLength: ValidationOption<number>;
 	minLength: ValidationOption<number>;
 	pattern: ValidationOption<RegExp>;
-	validate: Validate | Record<string, Validate>;
+	validate: Validate;
 }>;
 
 interface OptionDialogOptions {
