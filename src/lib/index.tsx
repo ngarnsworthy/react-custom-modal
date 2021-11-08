@@ -49,7 +49,7 @@ export declare type ValidationValueMessage<Value extends ValidationValue = Valid
 	message?: Message;
 };
 export declare type ValidateResult = Message | boolean | undefined;
-export declare type Validate = (data: any) => ValidateResult | Promise<ValidateResult>;
+export declare type Validate = (data: any) => ValidateResult;
 export declare type ValidationOptions = Partial<{
 	required: ValidationOption<boolean>;
 	min: ValidationOption<number>;
